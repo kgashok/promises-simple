@@ -34,6 +34,11 @@ function demoGithubUser() {
     .then(user => {
       //alert(`Full name: ${user.name}.`); // (1)
       $('#githubTarget').append("<p>"+name + "--> " + user.name + "</p>");
+      let img = document.createElement('img');
+      img.src = user.avatar_url;
+      img.className = "promise-avatar-example";
+      //document.body.append(img);
+      $('#githubTarget').append(img);
       document.getElementById("userID").focus()
       document.getElementById("userID").select();
 
