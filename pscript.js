@@ -1,3 +1,6 @@
+
+
+
 //-----------------------------
 // https://javascript.info/promise-chaining
 //------------------------------
@@ -57,6 +60,65 @@ function demoGithubUser() {
 
 //demoGithubUser();
 
+
+
+/* ---------------------------
+ * https://javascript.info/promise-basics
+ *
+ *
+ * --------------------------
+ */
+// Using Promises for asynchronous code 
+// https://javascript.info/promise-basics#example-loadscript
+
+  /*
+  function loadScript(src, callback) {
+    let script = document.createElement('script');
+    script.src = src;
+
+    script.onload = () => callback(null, script);
+    script.onerror = () => callback(new Error(`Script load error ` + src));
+
+    document.head.append(script);
+  }
+  */
+
+
+function loadScript(src) {
+  return new Promise(function(resolve, reject) {
+    let script = document.createElement('script');
+    script.src = src;
+
+    script.onload = () => resolve(script);
+    script.onerror = () => reject(new Error("Script load error: " + src));
+
+    document.head.append(script);
+  });
+}
+
+//let promise5 = loadScript("https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.2.0/lodash.js");
+let promise5 = loadScript("loadFile.js");
+
+
+promise5.then(
+  script => {
+    //alert(`${script.src} is loaded!`);
+    getHtmlFile();
+  },
+  error => alert(`Error: ${error.message}`)
+);
+
+promise5.then(script => {
+  //alert('One more handler to do something else!');
+  $("#scriptTarget").click(function(){
+    setText();
+  });
+});
+
+
+
+
+
 /*
 fetch('/user.json')
   .then(response => response.json())
@@ -113,60 +175,6 @@ var promise6 = new Promise(function(resolve, reject) {
 // .then…
 */
 
-
-/* ---------------------------
- * https://javascript.info/promise-basics
- *
- *
- * --------------------------
- */
-// Using Promises for asynchronous code 
-// https://javascript.info/promise-basics#example-loadscript
-
-  /*
-  function loadScript(src, callback) {
-    let script = document.createElement('script');
-    script.src = src;
-
-    script.onload = () => callback(null, script);
-    script.onerror = () => callback(new Error(`Script load error ` + src));
-
-    document.head.append(script);
-  }
-  */
-
-/*
-function loadScript(src) {
-  return new Promise(function(resolve, reject) {
-    let script = document.createElement('script');
-    script.src = src;
-
-    script.onload = () => resolve(script);
-    script.onerror = () => reject(new Error("Script load error: " + src));
-
-    document.head.append(script);
-  });
-}
-
-//let promise5 = loadScript("https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.2.0/lodash.js");
-let promise5 = loadScript("loadFile.js");
-
-
-promise5.then(
-  script => {
-    alert(`${script.src} is loaded!`);
-    getHtmlFile();
-  },
-  error => alert(`Error: ${error.message}`)
-);
-
-promise5.then(script => {
-  alert('One more handler to do something else!');
-  $("#scriptTarget").click(function(){
-    setText();
-  });
-});
-*/
 
 
 // ------------

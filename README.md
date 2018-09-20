@@ -5,6 +5,7 @@
    - http://bit.ly/promiseIncremental
    - http://j.mp/promiseIn16
    - http://bit.ly/promiseBasics
+      - https://javascript.info/promise-api
 
 # Important Documentation 
  
