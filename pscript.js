@@ -41,9 +41,25 @@ function addUserDetails(name, user) {
 
 }
 
-function demoGithubUser() {
+
+function demoGithubUserList() { 
+  let names = document.getElementById('userID').value; 
+  
+  if (names.indexOf(",") !== -1) { // is it a list?
+    names = names.split(",");
+    console.log(names);    
+    for (let name of names) 
+      demoGithubUser(name.trim()); 
+    
+    document.getElementById("userID").focus();
+  }
+  else
+    demoGithubUser(names); 
+}
+
+function demoGithubUser(name) {
   //let name = prompt("Enter a name?", "iliakan");
-  let name = document.getElementById('userID').value;
+  //let name = document.getElementById('userID').value;
 
   return loadJson(`https://api.github.com/users/${name}`)
     .then(user => {
