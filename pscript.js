@@ -29,7 +29,7 @@ class HttpError extends Error { // (1)
   }
 }
 
-function addUserDetails(user) { 
+function addUserDetails(name, user) { 
   $('#githubTarget').prepend("<p>"+name + "--> " + user.name + "</p>");
   let img = document.createElement('img');
   img.src = user.avatar_url;
@@ -48,7 +48,7 @@ function demoGithubUser() {
   return loadJson(`https://api.github.com/users/${name}`)
     .then(user => {
       //alert(`Full name: ${user.name}.`); // (1)
-      addUserDetails(user);
+      addUserDetails(name, user);
       return user;
     })
     .catch(err => {
