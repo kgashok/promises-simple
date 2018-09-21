@@ -29,6 +29,18 @@ class HttpError extends Error { // (1)
   }
 }
 
+function addUserDetails(user) { 
+  $('#githubTarget').prepend("<p>"+name + "--> " + user.name + "</p>");
+  let img = document.createElement('img');
+  img.src = user.avatar_url;
+  img.className = "promise-avatar-example";
+  //document.body.append(img);
+  $('#githubTarget').prepend(img);
+  document.getElementById("userID").focus()
+  document.getElementById("userID").select();
+
+}
+
 function demoGithubUser() {
   //let name = prompt("Enter a name?", "iliakan");
   let name = document.getElementById('userID').value;
@@ -36,15 +48,7 @@ function demoGithubUser() {
   return loadJson(`https://api.github.com/users/${name}`)
     .then(user => {
       //alert(`Full name: ${user.name}.`); // (1)
-      $('#githubTarget').prepend("<p>"+name + "--> " + user.name + "</p>");
-      let img = document.createElement('img');
-      img.src = user.avatar_url;
-      img.className = "promise-avatar-example";
-      //document.body.append(img);
-      $('#githubTarget').prepend(img);
-      document.getElementById("userID").focus()
-      document.getElementById("userID").select();
-
+      addUserDetails(user);
       return user;
     })
     .catch(err => {
