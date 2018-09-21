@@ -42,14 +42,35 @@ function addUserDetails(name, user) {
 }
 
 
+function parallelGithubUsers() { 
+  let names = document.getElementById('userID').value; 
+  if (names.indexOf(",") !== -1) { // is it a list?
+    names = names.split(",");
+    console.log(names);
+  }
+  let urls = names.map(name => 'https://api.github.com/users/'+name.trim());
+  console.log(urls);
+  let requests = urls.map(url => fetch(url));
+  
+  Promise.all(requests)
+    .then(responses => responses.forEach(
+      response => alert(`${response.url}: ${response.status}`)
+    ));
+  
+}
+
 function demoGithubUserList() { 
+  //parallelGithubUsers();
   let names = document.getElementById('userID').value; 
   
   if (names.indexOf(",") !== -1) { // is it a list?
     names = names.split(",");
     console.log(names);    
-    for (let name of names) 
-      demoGithubUser(name.trim()); 
+  
+    //for (let name of names) 
+    //  demoGithubUser(name.trim());
+    let requests = names.map(name => demoGithubUser(name.trim()));
+    Promise.all(requests);
     
     document.getElementById("userID").focus();
   }
