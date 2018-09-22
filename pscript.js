@@ -73,6 +73,8 @@ function demoGithubUserList() {
     Promise.all(requests);
     
     document.getElementById("userID").focus();
+    document.getElementById("userID").select();
+
   }
   else
     demoGithubUser(names); 
