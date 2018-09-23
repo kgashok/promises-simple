@@ -69,8 +69,15 @@ function demoGithubUserList() {
   
     //for (let name of names) 
     //  demoGithubUser(name.trim());
-    let requests = names.map(name => demoGithubUser(name.trim()));
-    Promise.all(requests);
+    //let requests = names.map(name => demoGithubUser(name.trim()));
+    let requests = names;
+    Promise.all(
+      requests.map(
+        name => demoGithubUser(name.trim()).catch(err => 
+                 alert("Failed: " + name /*+ err */)
+          )
+      )
+    );
     
     document.getElementById("userID").focus();
     document.getElementById("userID").select();
@@ -92,7 +99,7 @@ function demoGithubUser(name) {
     })
     .catch(err => {
       if (err instanceof HttpError && err.response.status == 404) { // (2)
-        alert("No such user, please reenter.");
+        alert(name + ": No such user, please reenter.");
         //return demoGithubUser();
         document.getElementById("userID").focus();
       } else {
