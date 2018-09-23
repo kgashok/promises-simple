@@ -31,15 +31,21 @@
       <!--
         placeholder="Please enter the user ID"
       -->
-      <input type="text" id="userID" name="b" value="iliakan, kgashok, jeresig, remy, *^, undefined, ###" />
+      <input type="text" id="userID" name="b" 
+             placeholder="Please enter one or more IDs">
       <button id="useridInput" onclick="demoGithubUserList()">Submit</button>
-
+      <div id="errorTarget">
+      <br>
+        <span>
+          <b>Failed IDs</b>
+        </span>
+        <div class = "errors" id = "errorIDs"> </div>
+      </div>
 
       <h3>
         <i>id = githubTarget  </i>
       </h3>
       <br>
-      
       <div id="githubTarget"></div>
       <br>
       
@@ -59,12 +65,8 @@
       <div id="scriptTarget"></div>
       <br>
 
-      
-
-      
 
     </div>
-
     <!-- is it better to import script here? 
       <script src="/script.js"></script> 
     -->

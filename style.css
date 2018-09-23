@@ -9,3 +9,9 @@ h1 {
   font-style: italic;
   color: #373fff;
 }
+
+.errors { 
+  color: red;
+  font-size: 2em;
+}
+

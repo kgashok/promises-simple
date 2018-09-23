@@ -9,6 +9,11 @@
     .then(response => response.json());
 }*/
 
+
+document.getElementById("userID").value =
+  "iliakan, kgashok, jeresig, remy, *^, undefined, ###";
+
+
 function loadJson(url) { // (2)
   return fetch(url)
     .then(response => {
@@ -48,7 +53,7 @@ function parallelGithubUsers() {
     names = names.split(",");
     console.log(names);
   }
-  let urls = names.map(name => 'https://api.github.com/users/'+name.trim());
+  let urls = names.map(name => 'https://api.github.com/users/'+ name.trim());
   console.log(urls);
   let requests = urls.map(url => fetch(url));
   
@@ -70,11 +75,20 @@ function demoGithubUserList() {
     //for (let name of names) 
     //  demoGithubUser(name.trim());
     //let requests = names.map(name => demoGithubUser(name.trim()));
+    let errorIDs = []; 
+    
     let requests = names;
     Promise.all(
       requests.map(
-        name => demoGithubUser(name.trim()).catch(err => 
-                 alert("Failed: " + name /*+ err */)
+        name => 
+          demoGithubUser(name.trim())
+            .catch(err => { 
+              errorIDs.push(name);
+              console.log("Failed: " + errorIDs /*+ err */);
+              document.getElementById("errorIDs")
+                      .innerHTML = 
+                        "<b>" + errorIDs + "</b>";
+            }
           )
       )
     );
@@ -99,9 +113,10 @@ function demoGithubUser(name) {
     })
     .catch(err => {
       if (err instanceof HttpError && err.response.status == 404) { // (2)
-        alert(name + ": No such user, please reenter.");
+        //alert(name + ": No such user, please reenter.");
         //return demoGithubUser();
         document.getElementById("userID").focus();
+        throw err;
       } else {
         throw err;
       }
