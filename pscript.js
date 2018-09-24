@@ -10,10 +10,33 @@
 }*/
 
 
-document.getElementById("userID").value =
-  "iliakan, kgashok, jeresig, remy, \
-   joekzbee, *^, undefined, ###";
+function init() { 
+  let gitterKey =
+      "bad0cafba005887e3e7e97dd5a640030f0c7e1b8";
+  let roomid =
+      "570a5925187bb6f0eadebf05";
+  let gUrl =
+      "https://api.gitter.im/v1/rooms/" + 
+      roomid + 
+      "/users?access_token=" + 
+      gitterKey;
 
+  let userids = [];
+
+  loadJson(gUrl).then(users => { 
+    for (var user of users) { 
+      userids.push(user.username);
+    }
+    return userids.join(", ");
+  }).then (userlist => { 
+    document.getElementById("userID").value = userlist + 
+    ", iliakan, jeresig, remy, \
+    joekzbee, *^, undefined, ###";
+  });
+}
+
+// initializes the list of userids to fetch from github
+init(); 
 
 function loadJson(url) { // (2)
   return fetch(url)
@@ -40,7 +63,10 @@ function addUserDetails(name, user) {
   let img = document.createElement('img');
   img.src = user.avatar_url;
   img.className = "promise-avatar-example";
-  //document.body.append(img);
+  img.height = "90";
+  img.width = "120";
+  img.class = "img-thumbnail";
+  document.body.append(img);
   $('#githubTarget').prepend(img);
   document.getElementById("userID").focus()
   document.getElementById("userID").select();
