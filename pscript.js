@@ -11,7 +11,8 @@
 
 
 document.getElementById("userID").value =
-  "iliakan, kgashok, jeresig, remy, *^, undefined, ###";
+  "iliakan, kgashok, jeresig, remy, \
+   joekzbee, *^, undefined, ###";
 
 
 function loadJson(url) { // (2)

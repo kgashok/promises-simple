@@ -1,11 +1,12 @@
 # Promises - Research
 
 - JavaScript bookmarklet code to get URL of tab that was launched from current tab
+   - http://bit.ly/promiseBasics
+   - https://javascript.info/promise-api 
    - Using [Promises](http://j.mp/promiseJS)
+   
    - http://bit.ly/promiseIncremental
    - http://j.mp/promiseIn16
-   - http://bit.ly/promiseBasics
-      - https://javascript.info/promise-api
 
 # Important Documentation 
  
