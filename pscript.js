@@ -94,14 +94,20 @@ function getUserIds(skip) {
 
 function demoGitterList () { 
   
-  let skiplist = [0, 30, 60, 90, 120]; 
+  let skiplist = [0, 30, 60] ; //, 60, 90, 120]; 
   Promise.all (
     skiplist.map (
       val => {
-        getUserIds(val).then(userlist =>
-          demoGithubUserList(userlist))
+        getUserIds(val).then(userlist => {
+          demoGithubUserList(userlist);
+          // how to introduce a sleep here?
+        })
     })
   );
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 function demoGithubUserList(names) { 
@@ -109,7 +115,7 @@ function demoGithubUserList(names) {
   //getUserIds(skip);  
   
   // let names = document.getElementById('userID').value; 
-    
+  
   if (names.indexOf(",") !== -1) { // is it a list?
     names = names.split(",");
     console.log(names);    
@@ -133,7 +139,7 @@ function demoGithubUserList(names) {
             }
           )
       )
-    );
+    ).then(sleep(2000));
     
     document.getElementById("userID").focus();
     document.getElementById("userID").select();
