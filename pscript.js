@@ -39,12 +39,12 @@ fetch('URL_GOES_HERE', {
  */
 
 let authObj = {
-  method: 'get', 
+  method: 'get',
   headers: new Headers({
-    'Authorization': 'Basic ' + btoa(
-        'kgashok:71ee7e04e0ea5bdb599a410d061f16eba016844b'
+  'Authorization': 'Basic ' + btoa(
+        'kgashok:c0c8e40acaecf13cce2c3c3ef430f139be3dc3d2'
       )
-  }), 
+  })
   //body: 'A=1&B=2'
 }
 
