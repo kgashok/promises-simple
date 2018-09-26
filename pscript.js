@@ -25,10 +25,31 @@ let gUrl =
     "/users?access_token=" + 
     gitterKey;
 
+/*
+fetch('URL_GOES_HERE', { 
+   method: 'post', 
+   headers: new Headers({
+     'Authorization': 'Basic '+btoa('username:password'), 
+     'Content-Type': 'application/x-www-form-urlencoded'
+   }), 
+   body: 'A=1&B=2'
+ });
+ 'kgashok:71ee7e04e0ea5bdb599a410d061f16eba016844b'
+  }
+ */
 
-function loadJson(url) { // (2)
-  return fetch(url)
-    .then(response => {
+let authObj = {
+  method: 'get', 
+  headers: new Headers({
+    'Authorization': 'Basic ' + btoa(
+        'kgashok:71ee7e04e0ea5bdb599a410d061f16eba016844b'
+      )
+  }), 
+  //body: 'A=1&B=2'
+}
+
+function loadJson(url, data = {}) { // (2)
+  return fetch(url,data).then(response => {
       if (response.status == 200) {
         return response.json();
       } else {
@@ -92,22 +113,31 @@ function getUserIds(skip) {
   });*/
 }
 
-function demoGitterList () { 
+async function demoGitterList () { 
   
-  let skiplist = [0, 30, 60] ; //, 60, 90, 120]; 
-  Promise.all (
+  let skiplist = [0, 30, 60, 90, 120, 150] ; //, 60, 90, 120]; 
+  for (var i = 0; i < skiplist.length; i++) {
+    getUserIds(skiplist[i])
+      .then(userlist =>
+            demoGithubUserList(userlist));
+    await sleep(9000);
+  }
+  /*Promise.all (
     skiplist.map (
       val => {
         getUserIds(val).then(userlist => {
           demoGithubUserList(userlist);
+          //await sleep (3000);
           // how to introduce a sleep here?
         })
     })
   );
+  */
 }
 
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise(resolve => setTimeout(resolve, ms))
+    .then(console.log("Sleep done! " ));
 }
 
 function demoGithubUserList(names) { 
@@ -139,8 +169,8 @@ function demoGithubUserList(names) {
             }
           )
       )
-    ).then(sleep(2000));
-    
+    ); // .then(await sleep (3000);
+
     document.getElementById("userID").focus();
     document.getElementById("userID").select();
 
@@ -152,8 +182,8 @@ function demoGithubUserList(names) {
 function demoGithubUser(name) {
   //let name = prompt("Enter a name?", "iliakan");
   //let name = document.getElementById('userID').value;
-
-  return loadJson(`https://api.github.com/users/${name}`)
+  
+  return loadJson(`https://api.github.com/users/${name}`, authObj)
     .then(user => {
       //alert(`Full name: ${user.name}.`); // (1)
       addUserDetails(name, user);
