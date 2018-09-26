@@ -10,33 +10,21 @@
 }*/
 
 
-function init() { 
-  let gitterKey =
-      "bad0cafba005887e3e7e97dd5a640030f0c7e1b8";
-  let roomid =
-      "570a5925187bb6f0eadebf05";
-  let gUrl =
-      "https://api.gitter.im/v1/rooms/" + 
-      roomid + 
-      "/users?access_token=" + 
-      gitterKey;
+/*
+document.getElementById('userID').value = 
+  "iliakan, jeresig, remy, \
+  joekzbee, *^, undefined, ###";     
+*/
+let gitterKey =
+    "bad0cafba005887e3e7e97dd5a640030f0c7e1b8";
+let roomid =
+    "570a5925187bb6f0eadebf05";
+let gUrl =
+    "https://api.gitter.im/v1/rooms/" + 
+    roomid + 
+    "/users?access_token=" + 
+    gitterKey;
 
-  let userids = [];
-
-  loadJson(gUrl).then(users => { 
-    for (var user of users) { 
-      userids.push(user.username);
-    }
-    return userids.join(", ");
-  }).then (userlist => { 
-    document.getElementById("userID").value = userlist + 
-    ", iliakan, jeresig, remy, \
-    joekzbee, *^, undefined, ###";
-  });
-}
-
-// initializes the list of userids to fetch from github
-init(); 
 
 function loadJson(url) { // (2)
   return fetch(url)
@@ -59,7 +47,7 @@ class HttpError extends Error { // (1)
 }
 
 function addUserDetails(name, user) { 
-  $('#githubTarget').prepend("<p>"+name + "--> " + user.name + "</p>");
+  $('#githubTarget').prepend("<p>"+name + " == " + user.name + "</p>");
   let img = document.createElement('img');
   img.src = user.avatar_url;
   img.className = "promise-avatar-example";
@@ -75,6 +63,7 @@ function addUserDetails(name, user) {
 
 
 function parallelGithubUsers() { 
+  
   let names = document.getElementById('userID').value; 
   if (names.indexOf(",") !== -1) { // is it a list?
     names = names.split(",");
@@ -91,10 +80,36 @@ function parallelGithubUsers() {
   
 }
 
-function demoGithubUserList() { 
-  //parallelGithubUsers();
-  let names = document.getElementById('userID').value; 
+function getUserIds(skip) { 
+  let userids = [];
+  return loadJson(gUrl + "&skip=" + skip).then(users => { 
+    for (var user of users) { 
+      userids.push(user.username);
+    }
+    return userids.join(", ");
+  });/*.then (userlist => { 
+    document.getElementById("userID").value = userlist;
+  });*/
+}
+
+function demoGitterList () { 
   
+  let skiplist = [0, 30, 60, 90, 120]; 
+  Promise.all (
+    skiplist.map (
+      val => {
+        getUserIds(val).then(userlist =>
+          demoGithubUserList(userlist))
+    })
+  );
+}
+
+function demoGithubUserList(names) { 
+  //parallelGithubUsers();
+  //getUserIds(skip);  
+  
+  // let names = document.getElementById('userID').value; 
+    
   if (names.indexOf(",") !== -1) { // is it a list?
     names = names.split(",");
     console.log(names);    
