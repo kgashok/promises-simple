@@ -34,15 +34,15 @@ fetch('URL_GOES_HERE', {
    }), 
    body: 'A=1&B=2'
  });
- 'kgashok:71ee7e04e0ea5bdb599a410d061f16eba016844b'
-  }
- */
+ 
+*/
 
+// thanks to https://stackoverflow.com/a/35780539/307454
 let authObj = {
   method: 'get',
   headers: new Headers({
   'Authorization': 'Basic ' + btoa(
-        'kgashok:c0c8e40acaecf13cce2c3c3ef430f139be3dc3d2'
+        'kgashok:github_private_token'
       )
   })
   //body: 'A=1&B=2'
@@ -113,26 +113,29 @@ function getUserIds(skip) {
   });*/
 }
 
-async function demoGitterList () { 
+function demoGitterList () { 
   
-  let skiplist = [0, 30, 60, 90, 120, 150] ; //, 60, 90, 120]; 
-  for (var i = 0; i < skiplist.length; i++) {
-    getUserIds(skiplist[i])
-      .then(userlist =>
-            demoGithubUserList(userlist));
-    await sleep(9000);
+  let names = document.getElementById('userID').value; 
+  if (names.trim().length) 
+    demoGithubUserList(names);
+  else {  
+    let skiplist = [0, 30, 60, 90, 120, 150] ;  
+
+    Promise.all (
+      skiplist.map (
+        skip => getUserIds(skip)
+          .then(userlist => demoGithubUserList(userlist))
+      )
+    );
+
+    /*for (var i = 0; i < skiplist.length; i++) {
+      getUserIds(skiplist[i])
+        .then(userlist =>
+              demoGithubUserList(userlist));
+      //await sleep(9000);
+    }*/
   }
-  /*Promise.all (
-    skiplist.map (
-      val => {
-        getUserIds(val).then(userlist => {
-          demoGithubUserList(userlist);
-          //await sleep (3000);
-          // how to introduce a sleep here?
-        })
-    })
-  );
-  */
+
 }
 
 function sleep(ms) {
@@ -144,7 +147,6 @@ function demoGithubUserList(names) {
   //parallelGithubUsers();
   //getUserIds(skip);  
   
-  // let names = document.getElementById('userID').value; 
   
   if (names.indexOf(",") !== -1) { // is it a list?
     names = names.split(",");

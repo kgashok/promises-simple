@@ -1,0 +1,17 @@
+USEFUL URLs to launch and see the results: 
+
+To get gitter room ID 
+https://api.gitter.im/v1/rooms?access_token=bad0cafba005887e3e7e97dd5a640030f0c7e1b8
+
+To get Users in a Gitter room 
+
+https://api.gitter.im/v1/rooms/570a5925187bb6f0eadebf05/users?access_token=bad0cafba005887e3e7e97dd5a640030f0c7e1b8&skip=30
+
+
+Video to understand Fetch JS with Headers
+https://www.youtube.com/watch?v=YJ7ZgGnhN5k
+
+https://scotch.io/tutorials/how-to-use-the-javascript-fetch-api-to-get-data
+
+https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#Supplying_request_options 
+
