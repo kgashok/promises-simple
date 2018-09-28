@@ -15,3 +15,14 @@ https://scotch.io/tutorials/how-to-use-the-javascript-fetch-api-to-get-data
 
 https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#Supplying_request_options 
 
+-------------
+
+Use some interesting hover box 
+
+http://css-workshop.com/hover-box-text-over-images-on-hover-and-more/ 
+
+-----
+
+To get personal Github Tokens 
+
+https://github.com/settings/developers

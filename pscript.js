@@ -1,6 +1,3 @@
-
-
-
 //-----------------------------
 // https://javascript.info/promise-chaining
 //------------------------------
@@ -10,11 +7,11 @@
 }*/
 
 
-/*
+
 document.getElementById('userID').value = 
   "iliakan, jeresig, remy, \
   joekzbee, *^, undefined, ###";     
-*/
+
 let gitterKey =
     "bad0cafba005887e3e7e97dd5a640030f0c7e1b8";
 let roomid =
@@ -33,18 +30,28 @@ fetch('URL_GOES_HERE', {
      'Content-Type': 'application/x-www-form-urlencoded'
    }), 
    body: 'A=1&B=2'
- });
- 
+ }); 
 */
-
 // thanks to https://stackoverflow.com/a/35780539/307454
 let authObj = {
   method: 'get',
   headers: new Headers({
   'Authorization': 'Basic ' + btoa(
-        'kgashok:github_private_token'
+        'kgashok:token'
       )
   })
+  // Create a file named '.env'
+    // and how do I import it into this file as a variable? 
+  // I remixed a node/express-project, the it says you can refer to it with:
+  // 'process.env.SECRET'
+  // and in .env you have:
+  // SECRET=d038cb786df8a06c1848fff3ce0ba30b1571695a
+  // maybe this also works without express
+  // could you try adding .env with adding 'SECRET' and see if it works?
+  
+  // but isn't that an overkill? Just to get an .env variable? 
+  
+  
   //body: 'A=1&B=2'
 }
 
@@ -53,11 +60,12 @@ function loadJson(url, data = {}) { // (2)
       if (response.status == 200) {
         return response.json();
       } else {
+        // what is thrown here has to be captured
+        // and made part of errorIDs? 
         throw new HttpError(response);
       }
     })
 }
-
 
 class HttpError extends Error { // (1)
   constructor(response) {
@@ -67,38 +75,42 @@ class HttpError extends Error { // (1)
   }
 }
 
+/*
+<div class="container">
+  <img src="img_avatar.png" alt="Avatar" class="image" style="width:100%">
+  <div class="middle">
+    <div class="text">John Doe</div>
+  </div>
+</div>
+*/
 function addUserDetails(name, user) { 
-  $('#githubTarget').prepend("<p>"+name + " == " + user.name + "</p>");
+  //$('#githubTarget').prepend("<p>"+name + " == " + user.name + "</p>");
   let img = document.createElement('img');
   img.src = user.avatar_url;
   img.className = "promise-avatar-example";
   img.height = "90";
   img.width = "120";
-  img.class = "img-thumbnail";
-  document.body.append(img);
+  img.class = "img-thumbnail img-responsive";
+  img.title = name + " == " + user.name;
+  
+  //img.class = "img-thumbnail img-responsive";
+  //document.body.append(img);
+  /*let imgC = document.createElement('div');
+  //imgC.class = "container"; 
+  let middle = document.createElement('div');
+  middle.class = "middle"; 
+  let textDiv = document.createElement('div');
+  textDiv.class = "text";
+  textDiv.value = name + " == " + user.name;
+  imgC.append(img);
+  imgC.append(middle);
+  imgC.append(textDiv);
+  $('#githubTarget').prepend(imgC);
+  */
   $('#githubTarget').prepend(img);
   document.getElementById("userID").focus()
   document.getElementById("userID").select();
 
-}
-
-
-function parallelGithubUsers() { 
-  
-  let names = document.getElementById('userID').value; 
-  if (names.indexOf(",") !== -1) { // is it a list?
-    names = names.split(",");
-    console.log(names);
-  }
-  let urls = names.map(name => 'https://api.github.com/users/'+ name.trim());
-  console.log(urls);
-  let requests = urls.map(url => fetch(url));
-  
-  Promise.all(requests)
-    .then(responses => responses.forEach(
-      response => alert(`${response.url}: ${response.status}`)
-    ));
-  
 }
 
 function getUserIds(skip) { 
@@ -204,6 +216,24 @@ function demoGithubUser(name) {
 }
 
 //demoGithubUser();
+
+function parallelGithubUsers() { 
+  
+  let names = document.getElementById('userID').value; 
+  if (names.indexOf(",") !== -1) { // is it a list?
+    names = names.split(",");
+    console.log(names);
+  }
+  let urls = names.map(name => 'https://api.github.com/users/'+ name.trim());
+  console.log(urls);
+  let requests = urls.map(url => fetch(url));
+  
+  Promise.all(requests)
+    .then(responses => responses.forEach(
+      response => alert(`${response.url}: ${response.status}`)
+    ));
+  
+}
 
 
 
