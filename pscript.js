@@ -10,7 +10,8 @@
 
 document.getElementById('userID').value = 
   "iliakan, jeresig, remy, \
-  joekzbee, *^, undefined, ###";     
+  joekzbee, *^, undefined, ###, \
+  GokulPrasath, parisudhaandireyaa";     
 
 let gitterKey =
     "bad0cafba005887e3e7e97dd5a640030f0c7e1b8";
@@ -37,7 +38,6 @@ let authObj = {
   method: 'get',
   headers: new Headers({
   'Authorization': 'Basic ' + btoa(
-        'kgashok:private_token'
       ) 
   }) 
   //body: 'A=1&B=2'
@@ -104,6 +104,7 @@ function addUserDetails(name, user) {
   //img.className = "promise-avatar-example";
   //img.height = "90";
   img.width = "120";
+  img.hspace = "10";
   //img.class = "img-thumbnail img-responsive";
   img.class = "figure-img img-fluid rounded";
   //img.class = "imgContainer";
@@ -119,8 +120,8 @@ function addUserDetails(name, user) {
   figure.append(img);
   figure.append(figcaption);
   
-  //$('#githubTarget').prepend(figure);
-  $('#githubTarget').prepend(img);
+  $('#githubTarget').prepend(figure);
+  //$('#githubTarget').prepend(img);
   document.getElementById("userID").focus()
   document.getElementById("userID").select();
 

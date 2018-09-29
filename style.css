@@ -55,11 +55,15 @@ h1 {
 }
 
 figure { 
-  display: table; 
+  /*display: table; */
+  display: inline-block;
+
 }
 
 figcaption { 
-  display: table-caption; 
+  display: table-caption;
+  /*display: block;*/
+  width: 100%;
   caption-side: bottom;
 }
 
