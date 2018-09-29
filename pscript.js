@@ -58,7 +58,7 @@ function addUserDetails(name, user) {
   img.src = user.avatar_url;
   //img.className = "promise-avatar-example";
  //img.class = "img-thumbnail img-responsive";
-  img.class = "figure-img img-fluid rounded";
+  //img.class = "figure-img img-fluid rounded";
   //img.class = "imgContainer";
   img.title = name + " == " + user.name;
   
