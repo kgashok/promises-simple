@@ -142,7 +142,8 @@ function demoGitterList () {
   if (names.trim().length) 
     demoGithubUserList(names);
   else {  
-    let skiplist = [0, 30, 60, 90, 120, 150] ;  
+    let skiplist = // [0, 30, 60, 90, 120, 150, 180, 210, 240] ; 
+      Array.from({length: 18}, (v, k) => k*30);
 
     Promise.all (
       skiplist.map (
@@ -175,9 +176,6 @@ function demoGithubUserList(names) {
     names = names.split(",");
     console.log(names);    
   
-    //for (let name of names) 
-    //  demoGithubUser(name.trim());
-    //let requests = names.map(name => demoGithubUser(name.trim()));
     let errorIDs = []; 
     
     let requests = names;
@@ -189,8 +187,9 @@ function demoGithubUserList(names) {
               errorIDs.push(name);
               console.log("Failed: " + errorIDs /*+ err */);
               document.getElementById("errorIDs")
-                      .innerHTML = 
-                        "<b>" + errorIDs + "</b>";
+                      .append(name, ",");
+                      //.innerHTML = 
+                      //  "<b>" + errorIDs + "</b>";
             }
           )
       )
