@@ -102,10 +102,7 @@ function addUserDetails(name, user) {
   let img = document.createElement('img');
   img.src = user.avatar_url;
   //img.className = "promise-avatar-example";
-  //img.height = "90";
-  img.width = "120";
-  img.hspace = "10";
-  //img.class = "img-thumbnail img-responsive";
+ //img.class = "img-thumbnail img-responsive";
   img.class = "figure-img img-fluid rounded";
   //img.class = "imgContainer";
   img.title = name + " == " + user.name;
@@ -140,7 +137,7 @@ function getUserIds(skip) {
 }
 
 function demoGitterList () { 
-  
+
   let names = document.getElementById('userID').value; 
   if (names.trim().length) 
     demoGithubUserList(names);

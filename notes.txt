@@ -26,3 +26,7 @@ http://css-workshop.com/hover-box-text-over-images-on-hover-and-more/
 To get personal Github Tokens 
 
 https://github.com/settings/developers
+
+How to secure the Keys 
+
+hhtp://j.mp/secureKeys
