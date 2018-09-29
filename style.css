@@ -54,6 +54,7 @@ h1 {
   padding: 16px 32px;
 }
 
+
 figure { 
   display: table; 
   display: inline-block;
@@ -62,26 +63,18 @@ figure {
 
 figcaption { 
   display: table-caption;
-  width: 100%;
+  max-width: 30%;
   caption-side: bottom;
   font-style: italic;
   font-size: 12px;
-  line-height: 1.4em
+  /* line-height: 1.4em */
 }
-
 
 img {
   /*img.height = "90"; */
     width :120px;
-    padding: 5px;
+    padding: 3px;
   /*max-width: 30%; */
   /*width: 40% */
   /*height: auto */
 }
-
-/*
-.imgContainer {
-    float:left;
-}
-
-*/

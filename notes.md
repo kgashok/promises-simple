@@ -17,9 +17,11 @@ https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#Supplying
 
 -------------
 
-Use some interesting hover box 
-
-http://css-workshop.com/hover-box-text-over-images-on-hover-and-more/ 
+Captioning Efforts 
+  - Use some interesting hover box 
+  - http://css-workshop.com/hover-box-text-over-images-on-hover-and-more/ 
+  - https://stackoverflow.com/a/25158177/307454 - for captioning
+  - http://jkorpela.fi/www/captions.html 
 
 -----
 
@@ -29,4 +31,11 @@ https://github.com/settings/developers
 
 How to secure the Keys 
 
-hhtp://j.mp/secureKeys
+  - hhtp://j.mp/secureKeys
+  - Reading a file in JS to secure the API key
+
+https://www.w3.org/TR/file-upload/
+https://www.dotnetcurry.com/html5/1167/read-local-file-api-html5-javascript
+
+How to use OAuth.io to do the API authentication
+https://apievangelist.com/2016/09/27/github-needs-client-oauth-proxy-for-more-complete-clientside-apps-on-pages/
