@@ -37,22 +37,36 @@ let authObj = {
   method: 'get',
   headers: new Headers({
   'Authorization': 'Basic ' + btoa(
-        'kgashok:token'
-      )
-  })
-  // Create a file named '.env'
-    // and how do I import it into this file as a variable? 
-  // I remixed a node/express-project, the it says you can refer to it with:
-  // 'process.env.SECRET'
-  // and in .env you have:
-  // SECRET=d038cb786df8a06c1848fff3ce0ba30b1571695a
-  // maybe this also works without express
-  // could you try adding .env with adding 'SECRET' and see if it works?
-  
-  // but isn't that an overkill? Just to get an .env variable? 
-  
-  
+        'kgashok:private_token'
+      ) 
+  }) 
   //body: 'A=1&B=2'
+
+  // function encode(string) {
+      //     var array = string.split("");
+      //     var output = [];
+      //     array.forEach(letter => {
+      //         output.push(letter.charCodeAt() + 1);
+      //     });
+      //     string = output.join(",");
+      //     return string;
+      // }
+
+
+      // function decode(string) {
+      //     var array = string.split(",");
+      //     var output = [];
+      //     array.forEach(charCode => {
+      //         output.push(String.fromCharCode(charCode - 1));
+      //     });
+      //     string = output.join("");
+      //     return string;
+      // }
+
+      // usage:
+      // var definitelyNotMySecretAPIKey = encode("e8e3ee385207b5df5983a572fb185dd429ef04ec");
+      // var apiKey = decode(definitelyNotMySecretAPIKey);
+  
 }
 
 function loadJson(url, data = {}) { // (2)
@@ -87,13 +101,30 @@ function addUserDetails(name, user) {
   //$('#githubTarget').prepend("<p>"+name + " == " + user.name + "</p>");
   let img = document.createElement('img');
   img.src = user.avatar_url;
-  img.className = "promise-avatar-example";
-  img.height = "90";
+  //img.className = "promise-avatar-example";
+  //img.height = "90";
   img.width = "120";
-  img.class = "img-thumbnail img-responsive";
+  //img.class = "img-thumbnail img-responsive";
+  img.class = "figure-img img-fluid rounded";
+  //img.class = "imgContainer";
   img.title = name + " == " + user.name;
   
-  //img.class = "img-thumbnail img-responsive";
+  let figure = document.createElement('figure');
+  figure.class = "figure";  
+  let figcaption = document.createElement('figcaption');
+  //figcaption.class = "figcaption";
+  figcaption.class = "figure-caption";
+  figcaption.textContent = name + ", " + user.name; 
+  
+  figure.append(img);
+  figure.append(figcaption);
+  
+  //$('#githubTarget').prepend(figure);
+  $('#githubTarget').prepend(img);
+  document.getElementById("userID").focus()
+  document.getElementById("userID").select();
+
+    //img.class = "img-thumbnail img-responsive";
   //document.body.append(img);
   /*let imgC = document.createElement('div');
   //imgC.class = "container"; 
@@ -107,9 +138,6 @@ function addUserDetails(name, user) {
   imgC.append(textDiv);
   $('#githubTarget').prepend(imgC);
   */
-  $('#githubTarget').prepend(img);
-  document.getElementById("userID").focus()
-  document.getElementById("userID").select();
 
 }
 

@@ -53,3 +53,27 @@ h1 {
   font-size: 16px;
   padding: 16px 32px;
 }
+
+figure { 
+  display: table; 
+}
+
+figcaption { 
+  display: table-caption; 
+  caption-side: bottom;
+}
+
+/*
+img {
+    /*max-width: 30%; */
+    /*width: 40% */
+    /*height: auto */
+  }
+*/
+
+/*
+.imgContainer {
+    float:left;
+}
+
+*/
