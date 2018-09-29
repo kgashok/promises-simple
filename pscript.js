@@ -125,21 +125,6 @@ function addUserDetails(name, user) {
   document.getElementById("userID").focus()
   document.getElementById("userID").select();
 
-    //img.class = "img-thumbnail img-responsive";
-  //document.body.append(img);
-  /*let imgC = document.createElement('div');
-  //imgC.class = "container"; 
-  let middle = document.createElement('div');
-  middle.class = "middle"; 
-  let textDiv = document.createElement('div');
-  textDiv.class = "text";
-  textDiv.value = name + " == " + user.name;
-  imgC.append(img);
-  imgC.append(middle);
-  imgC.append(textDiv);
-  $('#githubTarget').prepend(imgC);
-  */
-
 }
 
 function getUserIds(skip) { 
