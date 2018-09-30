@@ -1,17 +1,6 @@
-// sample16/loadFile.js
-function getHtmlFile() {
-
-  $("#scriptTarget").load("articleName.html");
-};
-
-function setText() {
-
-  $("#scriptTarget").css({
-    "color": "darkorange",
-    "font-weight": "bold"
-  });
-
-};
+// Modify authObj to include your private token from Github
+// and save this file as loadFile.js 
+//
 
 /*
 fetch('URL_GOES_HERE', { 
@@ -61,3 +50,19 @@ authObj = {
       // var apiKey = decode(definitelyNotMySecretAPIKey);
   
 }
+
+// sample16/loadFile.js
+function getHtmlFile() {
+
+  $("#scriptTarget").load("articleName.html");
+};
+
+function setText() {
+
+  $("#scriptTarget").css({
+    "color": "darkorange",
+    "font-weight": "bold"
+  });
+
+};
+
