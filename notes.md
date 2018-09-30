@@ -22,7 +22,10 @@ Captioning Efforts
   - http://css-workshop.com/hover-box-text-over-images-on-hover-and-more/ 
   - https://stackoverflow.com/a/25158177/307454 - for captioning
   - http://jkorpela.fi/www/captions.html 
-
+  - https://www.sandrasen.de/projektgebiete/kienheide/
+  - https://stackoverflow.com/questions/10128950/how-to-write-a-caption-under-an-image (could simplify things a lot) 
+  
+  
 -----
 
 To get personal Github Tokens 
@@ -39,3 +42,12 @@ https://www.dotnetcurry.com/html5/1167/read-local-file-api-html5-javascript
 
 How to use OAuth.io to do the API authentication
 https://apievangelist.com/2016/09/27/github-needs-client-oauth-proxy-for-more-complete-clientside-apps-on-pages/
+
+https://medium.com/poka-techblog/the-best-way-to-store-secrets-in-your-app-is-not-to-store-secrets-in-your-app-308a6807d3ed
+
+https://www.reddit.com/r/iOSProgramming/comments/5xh7my/how_do_you_securely_store_api_keys/
+
+https://github.com/zeit/next.js/issues/159
+
+https://stackoverflow.com/questions/2932782/global-variables-in-javascript-across-multiple-files?noredirect=1&lq=1
+

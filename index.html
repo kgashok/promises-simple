@@ -13,6 +13,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--
+      <link rel="stylesheet" href="https://cdn.rawgit.com/hakimel/zoom.js/master/css/main.css">
+      <link rel="stylesheet" href="https://cdn.rawgit.com/hakimel/zoom.js/master/css/reset.css">
+    -->
     <!-- import the webpage's javascript file -->
 
     <link rel="stylesheet" href="/style.css">
@@ -54,7 +58,7 @@
       </div>
      -->
 
-    <div>
+    <main>
       <h1>
         Access Github using Promises
       </h1>
@@ -81,7 +85,7 @@
       <!--<div class="container-fluid">
         <div class="row">
       -->
-          <div id="githubTarget"> <!--class="col-xs-12"> -->
+          <div class = "page-body" id="githubTarget"> <!--class="col-xs-12"> -->
           </div> 
       <!--  </div>
       </div> -->
@@ -107,7 +111,15 @@
         
       </div>
 
-    </div>
+    </main>
+    <script src = "https://cdn.rawgit.com/hakimel/zoom.js/master/js/zoom.js" ></script>
+    <script>
+			document.querySelector( '.page-body' ).addEventListener( 'click', function( event ) {
+				event.preventDefault();
+				zoom.to({ element: event.target });
+			} );
+		</script>
+
     <!-- is it better to import script here? 
       <script src="/script.js"></script> 
     -->

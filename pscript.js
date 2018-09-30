@@ -97,6 +97,7 @@ function demoGitterList () {
   if (names.trim().length) 
     demoGithubUserList(names);
   else {  
+    // https://stackoverflow.com/a/38213213/307454
     let skiplist = // [0, 30, 60, 90, 120, 150, 180, 210, 240] ; 
       Array.from({length: 18}, (v, k) => k*30);
 
