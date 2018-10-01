@@ -7,11 +7,13 @@
 }*/
 
 
-
+// some initialization which are used in later functions
+// gitter related inits need to obtained by 
+// making the appropriate API calls
 document.getElementById('userID').value = 
-  "iliakan, jeresig, remy, \
-  joekzbee, *^, undefined, ###, \
-  GokulPrasath, parisudhaandireyaa";     
+  `iliakan, jeresig, remy,
+  joekzbee, *^, undefined, ###,
+  GokulPrasath, parisudhaandireyaa`;
 
 let gitterKey =
     "bad0cafba005887e3e7e97dd5a640030f0c7e1b8";
@@ -99,7 +101,7 @@ function demoGitterList () {
   else {  
     // https://stackoverflow.com/a/38213213/307454
     let skiplist = // [0, 30, 60, 90, 120, 150, 180, 210, 240] ; 
-      Array.from({length: 18}, (v, k) => k*30);
+      Array.from({length: 24}, (v, k) => k*30);
 
     Promise.all (
       skiplist.map (
@@ -159,6 +161,13 @@ function demoGithubUserList(names) {
     demoGithubUser(names); 
 }
 
+// uses authObj which has been defined elsewhere in 
+// loadFile.js (to be renamed). It contains the private 
+// token which cannot be checked into github repos
+// There is no equivalent of extern in C in JavaScript
+// so need to use module export and import 
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export
+//
 function demoGithubUser(name) {
   //let name = prompt("Enter a name?", "iliakan");
   //let name = document.getElementById('userID').value;
@@ -172,17 +181,47 @@ function demoGithubUser(name) {
     .catch(err => {
       if (err instanceof HttpError && err.response.status == 404) { // (2)
         //alert(name + ": No such user, please reenter.");
-        //return demoGithubUser();
         document.getElementById("userID").focus();
-        throw err;
-      } else {
-        throw err;
       }
+      throw err;
     });
 }
 
-//demoGithubUser();
 
+function loadScript(src) {
+  return new Promise(function(resolve, reject) {
+    let script = document.createElement('script');
+    script.src = src;
+
+    script.onload = () => resolve(script);
+    script.onerror = () => reject(new Error("Script load error: " + src));
+
+    document.head.append(script);
+  });
+}
+
+//let promise5 = loadScript("https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.2.0/lodash.js");
+let promise5 = loadScript("loadFile.js");
+
+promise5.then(
+  script => {
+    //alert(`${script.src} is loaded!`);
+    getHtmlFile();
+  },
+  error => alert(`Error: ${error.message}`)
+);
+
+promise5.then(script => {
+  //alert('One more handler to do something else!');
+  $("#scriptTarget").click(function(){
+    setText();
+  });
+});
+
+
+// ------------------ LEGACY CODE -----------
+// Left here for review and reflection
+// ------------------------------------------
 function parallelGithubUsers() { 
   
   let names = document.getElementById('userID').value; 
@@ -223,42 +262,6 @@ function parallelGithubUsers() {
     document.head.append(script);
   }
   */
-
-
-function loadScript(src) {
-  return new Promise(function(resolve, reject) {
-    let script = document.createElement('script');
-    script.src = src;
-
-    script.onload = () => resolve(script);
-    script.onerror = () => reject(new Error("Script load error: " + src));
-
-    document.head.append(script);
-  });
-}
-
-//let promise5 = loadScript("https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.2.0/lodash.js");
-let promise5 = loadScript("loadFile.js");
-
-
-promise5.then(
-  script => {
-    //alert(`${script.src} is loaded!`);
-    getHtmlFile();
-  },
-  error => alert(`Error: ${error.message}`)
-);
-
-promise5.then(script => {
-  //alert('One more handler to do something else!');
-  $("#scriptTarget").click(function(){
-    setText();
-  });
-});
-
-
-
-
 
 /*
 fetch('/user.json')
