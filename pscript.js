@@ -95,6 +95,8 @@ function getUserIds(skip) {
 
 function demoGitterList () { 
 
+  zoom.out();
+
   let names = document.getElementById('userID').value; 
   if (names.trim().length) 
     demoGithubUserList(names);

@@ -64,7 +64,7 @@
       </em>
       <br>
       <br>
-      <input type="text" id="userID" name="b" 
+      <input type="text" id="userID" name="b" class="inputDialog" 
              placeholder="Blank it and let it rip!">
       <button id="useridInput" onclick="demoGitterList()">Submit</button>
       <div id="errorTarget">
@@ -115,6 +115,10 @@
 				event.preventDefault();
 				zoom.to({ element: event.target });
 			} );
+      document.querySelector('.inputDialog').addEventListener( 'click', function(event) {
+        event.preventDefault();
+        zoom.to({ element: event.target});
+      });
 		</script>
 
     <!-- is it better to import script here? 
