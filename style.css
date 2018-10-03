@@ -78,3 +78,14 @@ figure img {
   /*width: 40% */
   /*height: auto */
 }
+
+header { 
+  background-color: beige;
+}
+.page-body { 
+  background-color: whitesmoke;
+}
+
+.errors { 
+  background-color: snow;
+}
