@@ -10,9 +10,43 @@ h1 {
   color: #373fff;
 }
 
+header { 
+  background-color: beige;
+}
+
+.page-body { 
+  background-color: whitesmoke;
+}
+
 .errors { 
+  background-color: snow;
   color: red;
   font-size: 1.5em;
+}
+
+figure { 
+  display: table; 
+  display: inline-block;
+
+}
+
+figcaption { 
+  display: table-caption;
+  max-width: 30%;
+  caption-side: bottom;
+  font-style: italic;
+  font-size: 9px;
+  /* line-height: 1.4em */
+}
+
+
+figure img {
+  /*img.height = "90"; */
+    width :118px;
+    padding: 2px;
+  /*max-width: 30%; */
+  /*width: 40% */
+  /*height: auto */
 }
 
 
@@ -54,39 +88,3 @@ h1 {
   padding: 16px 32px;
 }
 
-
-figure { 
-  display: table; 
-  display: inline-block;
-
-}
-
-figcaption { 
-  display: table-caption;
-  max-width: 30%;
-  caption-side: bottom;
-  font-style: italic;
-  font-size: 9px;
-  /* line-height: 1.4em */
-}
-
-figure img {
-  /*img.height = "90"; */
-    width :120px;
-    padding: 3px;
-  /*max-width: 30%; */
-  /*width: 40% */
-  /*height: auto */
-}
-
-header { 
-  background-color: beige;
-}
-
-.page-body { 
-  background-color: whitesmoke;
-}
-
-.errors { 
-  background-color: snow;
-}

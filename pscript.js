@@ -130,37 +130,32 @@ function sleep(ms) {
 function demoGithubUserList(names) { 
   //parallelGithubUsers();
   //getUserIds(skip);  
-  
-  
-  if (names.indexOf(",") !== -1) { // is it a list?
-    names = names.split(",");
-    console.log(names);    
-  
-    let errorIDs = []; 
     
-    let requests = names;
-    Promise.all(
-      requests.map(
-        name => 
-          demoGithubUser(name.trim())
-            .catch(err => { 
-              errorIDs.push(name);
-              console.log("Failed: " + errorIDs /*+ err */);
-              document.getElementById("errorIDs")
-                      .append(name, ",");
-                      //.innerHTML = 
-                      //  "<b>" + errorIDs + "</b>";
-            }
-          )
-      )
-    ); // .then(await sleep (3000);
+  names = names.split(",");
+  console.log(names);    
 
-    document.getElementById("userID").focus();
-    document.getElementById("userID").select();
+  let errorIDs = []; 
 
-  }
-  else
-    demoGithubUser(names); 
+  let requests = names;
+  Promise.all(
+    requests.map(
+      name => 
+        demoGithubUser(name.trim())
+          .catch(err => { 
+            errorIDs.push(name);
+            console.log("Failed: " + errorIDs /*+ err */);
+            document.getElementById("errorIDs")
+                    .append(name, ",");
+                    //.innerHTML = 
+                    //  "<b>" + errorIDs + "</b>";
+          }
+        )
+    )
+  ); // .then(await sleep (3000);
+
+  document.getElementById("userID").focus();
+  document.getElementById("userID").select();
+
 }
 
 // uses authObj which has been defined elsewhere in 
