@@ -1,8 +1,13 @@
 /* CSS files add styling rules to your content */
 
+input { 
+  background-color: azure; 
+}
+
 body {
   font-family: "Benton Sans", "Helvetica Neue", helvetica, arial, sans-serif;
   margin: 2em;
+  background-color: beige;
 }
 
 h1 {
