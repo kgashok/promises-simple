@@ -1,6 +1,8 @@
 # To Do (for newcomer)
-  
-  - Read comments in **github.html** 
+
+Interested in understanding this codebase and remixing it?   
+  - First, read comments in **github.html** 
+    - Understand the basic version first 
   - Create your own version of **loadFile.js** from loadFile.js.txt 
      - this will be required for the application's parallel Promises triggering
 
