@@ -30,6 +30,8 @@ header {
 }
 
 #progressStatus { 
+  border: dotted;
+  border-color: darkGray;
   background-color: snow;
   color: green;
   font-size: 1.5em;

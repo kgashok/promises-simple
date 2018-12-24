@@ -17,6 +17,8 @@ function initDefaultIds() {
     GokulPrasath, parisudhaandireyaa`;
 }
 
+  document.getElementById('progressStatus').innerHTML = "Status Ok";
+
 
 let gitterKey =
     "bad0cafba005887e3e7e97dd5a640030f0c7e1b8";
@@ -130,7 +132,7 @@ async function launchHttpRequestsToGitter() {
     );
 
     await sleep(2000);
-    pNode.innerHTML = 'Completed!';
+    pNode.innerHTML = 'Parallel requests done. Await results!';
     initDefaultIds();
 
     
