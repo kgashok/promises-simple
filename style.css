@@ -29,6 +29,12 @@ header {
   font-size: 1.5em;
 }
 
+#progressStatus { 
+  background-color: snow;
+  color: green;
+  font-size: 1.5em;
+}
+
 figure { 
   display: table; 
   display: inline-block;

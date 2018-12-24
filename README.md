@@ -1,3 +1,9 @@
+# To Do (for newcomer)
+  
+  - Read comments in **github.html** 
+  - Create your own version of **loadFile.js** from loadFile.js.txt 
+     - this will be required for the application's parallel Promises triggering
+
 # Promises - Research
 
 - JavaScript bookmarklet code to get URL of tab that was launched from current tab
