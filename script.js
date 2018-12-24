@@ -108,8 +108,12 @@ function demoGitterList () {
 
 }
   
-function launchHttpRequestsToGitter() { 
+async function launchHttpRequestsToGitter() { 
     // https://stackoverflow.com/a/38213213/307454
+    
+    var pNode = document.getElementById("progressStatus");
+    pNode.innerHTML = "Please wait...."; 
+
     let skiplist = // [0, 30, 60, 90, 120, 150, 180, 210, 240] ; 
       Array.from({length: 24}, (v, k) => k*30);
 
@@ -119,6 +123,9 @@ function launchHttpRequestsToGitter() {
           .then(userlist => demoGithubUserList(userlist))
       )
     );
+
+    await sleep(2000);
+    pNode.innerHTML = 'Completed!';
     
     // an untested sequential approach to Http requests
     /*for (var i = 0; i < skiplist.length; i++) {
