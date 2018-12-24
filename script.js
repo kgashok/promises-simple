@@ -10,10 +10,13 @@
 // some initialization which are used in later functions
 // gitter related inits need to obtained by 
 // making the appropriate API calls
-document.getElementById('userID').value = 
-  `iliakan, jeresig, remy,
-  joekzbee, *^, undefined, ###,
-  GokulPrasath, parisudhaandireyaa`;
+function initDefaultIds() { 
+  document.getElementById('userID').value = 
+    `iliakan, jeresig, remy,
+    joekzbee, *^, undefined, ###,
+    GokulPrasath, parisudhaandireyaa`;
+}
+
 
 let gitterKey =
     "bad0cafba005887e3e7e97dd5a640030f0c7e1b8";
@@ -25,6 +28,7 @@ let gUrl =
     "/users?access_token=" + 
     gitterKey;
 
+initDefaultIds();
 
 function loadJson(url, data = {}) { // (2)
   return fetch(url,data).then(response => {
@@ -111,6 +115,7 @@ function demoGitterList () {
 async function launchHttpRequestsToGitter() { 
     // https://stackoverflow.com/a/38213213/307454
     
+    document.getElementById("userID").value = "";    
     var pNode = document.getElementById("progressStatus");
     pNode.innerHTML = "Please wait...."; 
 
@@ -126,6 +131,8 @@ async function launchHttpRequestsToGitter() {
 
     await sleep(2000);
     pNode.innerHTML = 'Completed!';
+    initDefaultIds();
+
     
     // an untested sequential approach to Http requests
     /*for (var i = 0; i < skiplist.length; i++) {
