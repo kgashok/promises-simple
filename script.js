@@ -93,6 +93,8 @@ function getUserIds(skip) {
   });*/
 }
 
+  
+  
 function demoGitterList () { 
 
   zoom.out();
@@ -101,6 +103,12 @@ function demoGitterList () {
   if (names.trim().length) 
     demoGithubUserList(names);
   else {  
+    launchHttpRequestsToGitter();
+  }
+
+}
+  
+function launchHttpRequestsToGitter() { 
     // https://stackoverflow.com/a/38213213/307454
     let skiplist = // [0, 30, 60, 90, 120, 150, 180, 210, 240] ; 
       Array.from({length: 24}, (v, k) => k*30);
@@ -111,15 +119,14 @@ function demoGitterList () {
           .then(userlist => demoGithubUserList(userlist))
       )
     );
-
+    
+    // an untested sequential approach to Http requests
     /*for (var i = 0; i < skiplist.length; i++) {
       getUserIds(skiplist[i])
         .then(userlist =>
               demoGithubUserList(userlist));
       //await sleep(9000);
     }*/
-  }
-
 }
 
 function sleep(ms) {
