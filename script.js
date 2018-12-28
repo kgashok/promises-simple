@@ -17,8 +17,10 @@ function sleep(ms) {
   
 async function simulateUltimate() { 
     console.log ("Switching to busy cursor");
+    document.body.style.cursor = "wait";
     await sleep(3000);
     console.log("Switching back to normal cursor");
+    document.body.style.cursor = "default";
 }
   
 /*
