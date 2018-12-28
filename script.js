@@ -5,6 +5,30 @@
   return fetch(url)
     .then(response => response.json());
 }*/
+  
+console.log("Explore Promises"); 
+
+function sleep(ms) {
+  console.log("Sleep function called for " + ms + " ms");
+
+  return new Promise(resolve => setTimeout(resolve, ms))
+    .then(() => console.log("Sleep done!" ));
+}
+  
+async function simulateUltimate() { 
+    console.log ("Switching to busy cursor");
+    await sleep(3000);
+    console.log("Switching back to normal cursor");
+}
+  
+/*
+  function simulateUltimate() { 
+    sleep(3000)
+      .then(
+        ()=> console.log("Back in called normal function!")
+      );     
+}
+*/
 
 
 // some initialization which are used in later functions
@@ -145,10 +169,6 @@ async function launchHttpRequestsToGitter() {
     }*/
 }
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
-    .then(console.log("Sleep done! " ));
-}
 
 function demoGithubUserList(names) { 
   //parallelGithubUsers();
@@ -239,6 +259,8 @@ promise5.then(script => {
 });
 
 
+
+  
 // ------------------------------------------
 //
 //   LEGACY CODE 
@@ -246,6 +268,21 @@ promise5.then(script => {
 // ------------------------------------------
 // Left here for review and reflection
 //
+  
+/*
+var promise6 = new Promise(function(resolve, reject) {
+
+  setTimeout(() => resolve(1), 1000);
+
+}).then(function(result) {
+
+  alert(result);
+  return result * 2; // <-- (1)
+
+}) // <-- (2)
+// .then…
+*/
+
 function parallelGithubUsers() { 
   
   let names = document.getElementById('userID').value; 
@@ -329,19 +366,6 @@ fetch('/user.json')
 
 */
 
-/*
-var promise6 = new Promise(function(resolve, reject) {
-
-  setTimeout(() => resolve(1), 1000);
-
-}).then(function(result) {
-
-  alert(result);
-  return result * 2; // <-- (1)
-
-}) // <-- (2)
-// .then…
-*/
 
 
 
@@ -392,8 +416,6 @@ promise2.then(
 
 */
 
-
-console.log("Explore Promises"); 
 
 /*
 let promise = new Promise(function(resolve, reject) {
