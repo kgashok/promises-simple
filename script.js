@@ -140,13 +140,25 @@ function demoGitterList () {
 
 }
   
-async function launchHttpRequestsToGitter() { 
-    // https://stackoverflow.com/a/38213213/307454
-    
+function changeProgressToBusy() { 
     document.getElementById("userID").value = "";    
     var pNode = document.getElementById("progressStatus");
     pNode.innerHTML = "Please wait...."; 
-
+    document.body.style.cursor = "wait";
+}
+  
+function changeProgressToCompleted() { 
+    var pNode = document.getElementById("progressStatus");
+    pNode.innerHTML = 'Parallel requests done. Await results!';
+    initDefaultIds();
+    document.body.style.cursor = "default";
+}
+  
+async function launchHttpRequestsToGitter() { 
+    // https://stackoverflow.com/a/38213213/307454
+    
+    changeProgressToBusy(); 
+    
     let skiplist = // [0, 30, 60, 90, 120, 150, 180, 210, 240] ; 
       Array.from({length: 24}, (v, k) => k*30);
 
@@ -155,13 +167,14 @@ async function launchHttpRequestsToGitter() {
         skip => getUserIds(skip)
           .then(userlist => demoGithubUserList(userlist))
       )
-    );
+    ).then (() => { 
+      sleep(5000)
+        .then(() => {
+          changeProgressToCompleted();
+        });
+    });
 
-    await sleep(2000);
-    pNode.innerHTML = 'Parallel requests done. Await results!';
-    initDefaultIds();
 
-    
     // an untested sequential approach to Http requests
     /*for (var i = 0; i < skiplist.length; i++) {
       getUserIds(skiplist[i])
