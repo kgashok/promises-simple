@@ -15,7 +15,7 @@ function sleep(ms) {
     .then(() => console.log("Sleep done!" ));
 }
   
-async function simulateUltimate() { 
+async function simulateCallToFunction() { 
     console.log ("Switching to busy cursor");
     document.body.style.cursor = "wait";
     await sleep(3000);
