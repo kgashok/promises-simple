@@ -15,6 +15,7 @@ function sleep(ms) {
     .then(() => console.log("Sleep done!" ));
 }
   
+/*
 async function simulateCallToFunction() { 
     console.log ("Switching to busy cursor");
     document.body.style.cursor = "wait";
@@ -22,15 +23,18 @@ async function simulateCallToFunction() {
     console.log("Switching back to normal cursor");
     document.body.style.cursor = "default";
 }
-  
-/*
-  function simulateUltimate() { 
-    sleep(3000)
-      .then(
-        ()=> console.log("Back in called normal function!")
-      );     
-}
 */
+
+function simulateCallToFunction() { 
+  console.log("switching to busy cursor");
+  document.body.style.cursor = "wait";  
+  sleep(3000)
+      .then(
+        () => {
+          console.log("Switching back to normal cursor");
+          document.body.style.cursor = "default";
+        });
+}
 
 
 // some initialization which are used in later functions
