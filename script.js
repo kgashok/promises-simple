@@ -41,28 +41,17 @@ function sleep(ms) {
     .then(changeCursor("default"));
 }
 
+function simulateCallToFunction() {sleep (3000);} 
+
 /*
 async function simulateCallToFunction() { 
-    console.log ("Switching to busy cursor");
+    console.log ("Switching into busy cursor");
     document.body.style.cursor = "wait";
     await sleep(3000);
     console.log("Switching back to normal cursor");
     document.body.style.cursor = "default";
 }
 */
-
-function simulateCallToFunction() {sleep (3000);} 
-
-function simulateCallToFunction2() { 
-  console.log("switching to busy cursor");
-  document.body.style.cursor = "wait";  
-  sleep(3000)
-      .then(
-        () => {
-          console.log("Switching back to normal cursor");
-          document.body.style.cursor = "default";
-        });
-}
 
 
 // some initialization which are used in later functions
