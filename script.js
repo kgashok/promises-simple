@@ -18,9 +18,7 @@ function sleep2(ms) {
 
 /* a verbose sleep function that uses three promises
    that have been chained together
-   
    Credits: https://stackoverflow.com/a/53995436/307454
- 
 */
 function sleep(ms) {
 
@@ -46,7 +44,8 @@ function sleep(ms) {
 }
 
 function simulateCallToFunction() {sleep (3000);} 
-
+// The async version is provided below for 
+// contrast and comparison 
 /*
 async function simulateCallToFunction() { 
     console.log ("Switching into busy cursor");
@@ -66,10 +65,9 @@ function initDefaultIds() {
     `iliakan, jeresig, remy,
     joekzbee, *^, undefined, ###,
     GokulPrasath, parisudhaandireyaa`;
-}
-
+  
   document.getElementById('progressStatus').innerHTML = "Status Ok";
-
+}
 
 let gitterKey =
     "bad0cafba005887e3e7e97dd5a640030f0c7e1b8";
@@ -82,6 +80,110 @@ let gUrl =
     gitterKey;
 
 initDefaultIds();
+
+
+function getUserIdsFromGitterRoom(skip) { 
+  let userids = [];
+  return loadJson(gUrl + "&skip=" + skip).then(users => { 
+    for (var user of users) { 
+      userids.push(user.username);
+    }
+    return userids.join(", ");
+  });/*.then (userlist => { 
+    document.getElementById("userID").value = userlist;
+  });*/
+}
+  
+function changeProgressToBusy() { 
+    document.getElementById("userID").value = "";    
+    var pNode = document.getElementById("progressStatus");
+    pNode.innerHTML = "Please wait...."; 
+    document.body.style.cursor = "wait";
+}
+  
+function changeProgressToCompleted() { 
+    var pNode = document.getElementById("progressStatus");
+    pNode.innerHTML = 'Parallel requests done. Await results!';
+    initDefaultIds();
+    document.body.style.cursor = "default";
+}
+
+// the main function that launches the parallel promise calls
+// activated from the button in the HTML page 
+// Why is it an async function - need to review
+//
+async function launchHttpRequestsToGitter() { 
+    // https://stackoverflow.com/a/38213213/307454    
+    changeProgressToBusy(); 
+    let skiplist = // [0, 30, 60, 90, 120, 150, 180, 210, 240] ; 
+      Array.from({length: 24}, (v, k) => k*30);
+
+    Promise.all (
+      skiplist.map (
+        skip => getUserIdsFromGitterRoom(skip)
+          .then(userlist => fetchGitInfoForGitterList(userlist))
+      )
+    ).then (() => { 
+      sleep(5000)
+        .then(() => {
+          changeProgressToCompleted();
+        });
+    });
+
+    // an untested sequential approach to Http requests
+    /*for (var i = 0; i < skiplist.length; i++) {
+      getUserIdsFromGitterRoom(skiplist[i])
+        .then(userlist =>
+              fetchGitInfoForGitterList(userlist));
+      //await sleep(9000);
+    }*/
+}
+
+function fetchGitInfoForGitterList(names) {
+ 
+  names = names.split(",");
+  console.log(names);
+
+  let errorIDs = [];
+
+  Promise.all(
+    names.map(name => getGitInfoAndDisplay(name.trim())
+        .catch(err => processError(errorIDs, err, name))
+    )
+  ); // .then(await sleep (3000);
+
+  document.getElementById("userID").focus();
+  document.getElementById("userID").select();
+
+}
+
+function processError(errorIDs, err, name) { 
+  errorIDs.push(name);
+  console.log("Failed: " + errorIDs /*+ err */);
+  document.getElementById("errorIDs").append(name, ",");
+}
+  
+// uses authObj which has been defined elsewhere in 
+// loadFile.js (to be renamed). It contains the private 
+// token which cannot be checked into github repos
+// There is no equivalent of extern in C in JavaScript
+// so need to use module export and import 
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export
+//
+function getGitInfoAndDisplay(name) {  
+  return loadJson(`https://api.github.com/users/${name}`, authObj)
+    .then(user => {
+      //alert(`Full name: ${user.name}.`); // (1)
+      addUserDetails(name, user);
+      return user;
+    })
+    .catch(err => {
+      if (err instanceof HttpError && err.response.status == 404) { // (2)
+        document.getElementById("userID").focus();
+      }
+      throw err;
+    });
+}
 
 function loadJson(url, data = {}) { // (2)
   return fetch(url,data).then(response => {
@@ -112,19 +214,13 @@ class HttpError extends Error { // (1)
 </div>
 */
 function addUserDetails(name, user) { 
-  //$('#githubTarget').prepend("<p>"+name + " == " + user.name + "</p>");
   let img = document.createElement('img');
   img.src = user.avatar_url;
-  //img.className = "promise-avatar-example";
- //img.class = "img-thumbnail img-responsive";
-  //img.class = "figure-img img-fluid rounded";
-  //img.class = "imgContainer";
   img.title = name + " == " + user.name;
   
   let figure = document.createElement('figure');
   figure.class = "figure";  
   let figcaption = document.createElement('figcaption');
-  //figcaption.class = "figcaption";
   figcaption.class = "figure-caption";
   figcaption.textContent = name + ", " + user.name; 
   
@@ -132,135 +228,20 @@ function addUserDetails(name, user) {
   figure.append(figcaption);
   
   $('#githubTarget').prepend(figure);
-  //$('#githubTarget').prepend(img);
   document.getElementById("userID").focus()
   document.getElementById("userID").select();
-
-}
-
-function getUserIdsFromGitterRoom(skip) { 
-  let userids = [];
-  return loadJson(gUrl + "&skip=" + skip).then(users => { 
-    for (var user of users) { 
-      userids.push(user.username);
-    }
-    return userids.join(", ");
-  });/*.then (userlist => { 
-    document.getElementById("userID").value = userlist;
-  });*/
-}
-
-  
-  
-function demoGitterList () { 
-
-  zoom.out();
-
-  let names = document.getElementById('userID').value; 
-  if (names.trim().length) 
-    fetchGitInfoForGitterList(names);
-  else {  
-    launchHttpRequestsToGitter();
-  }
-
-}
-  
-function changeProgressToBusy() { 
-    document.getElementById("userID").value = "";    
-    var pNode = document.getElementById("progressStatus");
-    pNode.innerHTML = "Please wait...."; 
-    document.body.style.cursor = "wait";
-}
-  
-function changeProgressToCompleted() { 
-    var pNode = document.getElementById("progressStatus");
-    pNode.innerHTML = 'Parallel requests done. Await results!';
-    initDefaultIds();
-    document.body.style.cursor = "default";
-}
-  
-async function launchHttpRequestsToGitter() { 
-    // https://stackoverflow.com/a/38213213/307454
     
-    changeProgressToBusy(); 
-    
-    let skiplist = // [0, 30, 60, 90, 120, 150, 180, 210, 240] ; 
-      Array.from({length: 24}, (v, k) => k*30);
-
-    Promise.all (
-      skiplist.map (
-        skip => getUserIdsFromGitterRoom(skip)
-          .then(userlist => fetchGitInfoForGitterList(userlist))
-      )
-    ).then (() => { 
-      sleep(5000)
-        .then(() => {
-          changeProgressToCompleted();
-        });
-    });
-
-
-    // an untested sequential approach to Http requests
-    /*for (var i = 0; i < skiplist.length; i++) {
-      getUserIdsFromGitterRoom(skiplist[i])
-        .then(userlist =>
-              fetchGitInfoForGitterList(userlist));
-      //await sleep(9000);
-    }*/
 }
 
-function processError(errorIDs, err, name) { 
-  errorIDs.push(name);
-  console.log("Failed: " + errorIDs /*+ err */);
-  document.getElementById("errorIDs").append(name, ",");
-}
+
   
-function fetchGitInfoForGitterList(names) {
- 
-  names = names.split(",");
-  console.log(names);
-
-  let errorIDs = [];
-
-  let requests = names;
-  Promise.all(
-    requests.map(name => getGitInfoAndDisplay(name.trim())
-        .catch(err => processError(errorIDs, err, name))
-    )
-  ); // .then(await sleep (3000);
-
-  document.getElementById("userID").focus();
-  document.getElementById("userID").select();
-
-}
-
-// uses authObj which has been defined elsewhere in 
-// loadFile.js (to be renamed). It contains the private 
-// token which cannot be checked into github repos
-// There is no equivalent of extern in C in JavaScript
-// so need to use module export and import 
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export
-//
-function getGitInfoAndDisplay(name) {
-  //let name = prompt("Enter a name?", "iliakan");
-  //let name = document.getElementById('userID').value;
   
-  return loadJson(`https://api.github.com/users/${name}`, authObj)
-    .then(user => {
-      //alert(`Full name: ${user.name}.`); // (1)
-      addUserDetails(name, user);
-      return user;
-    })
-    .catch(err => {
-      if (err instanceof HttpError && err.response.status == 404) { // (2)
-        //alert(name + ": No such user, please reenter.");
-        document.getElementById("userID").focus();
-      }
-      throw err;
-    });
-}
-
-
+//------------------------
+//------------------------
+// Miscellaneous functions
+//------------------------
+//------------------------
+  
 function loadScript(src) {
   return new Promise(function(resolve, reject) {
     let script = document.createElement('script');
@@ -292,6 +273,16 @@ promise5.then(script => {
 });
 
 
+function demoGitterList () { 
+  zoom.out();
+
+  let names = document.getElementById('userID').value; 
+  if (names.trim().length) 
+    fetchGitInfoForGitterList(names);
+  else {  
+    launchHttpRequestsToGitter();
+  }
+}
 
   
 // ------------------------------------------
