@@ -5,15 +5,14 @@
   return fetch(url)
     .then(response => response.json());
 }*/
-
 var authObj; // for accessing the GithubAPI 
 
-console.log("Explore Promises"); 
+console.log("Explore Promises");
 
 function sleep2(ms) {
-  console.log("Sleep function called for " + ms + " ms\n");
-  return new Promise(resolve => setTimeout(resolve, ms))
-    .then(() => console.log("Sleep done!" ));
+    console.log("Sleep function called for " + ms + " ms\n");
+    return new Promise(resolve => setTimeout(resolve, ms))
+        .then(() => console.log("Sleep done!"));
 }
 
 /* a verbose sleep function that uses three promises
@@ -22,28 +21,30 @@ function sleep2(ms) {
 */
 function sleep(ms) {
 
-  const pSleep = ms => () => 
-    new Promise((resolve, reject) => window.setTimeout(resolve, ms));
+    // A higher order function that introduces a delay of 'ms' millisec
+    const pSleep = ms => () =>
+        new Promise((resolve, reject) => window.setTimeout(resolve, ms));
 
-  const changeCursor = c => () => 
-    new Promise((resolve, reject) => {
-      document.body.style.cursor = c; 
-      resolve();
-    });
+    const changeCursor = c => () =>
+        new Promise((resolve, reject) => {
+            document.body.style.cursor = c;
+            resolve();
+        });
 
-  let names = document.getElementById('userID').value; 
-
-  return Promise.resolve()
-    .then(() => console.log("Switching to busy cursor"))
-    .then(changeCursor("wait"))
-    .then(() => console.log("Sleep function called for " + ms + " ms\n"))
-    .then(pSleep(ms))
-    .then(() => console.log("Sleep done!"))
-    .then(() => console.log("Switching to normal cursor"))
-    .then(changeCursor("default"));
+    return Promise.resolve()
+        .then(() => console.log("Switching to busy cursor"))
+        .then(changeCursor("wait"))
+        .then(() => console.log("Sleep function called for " + ms + " ms\n"))
+        .then(pSleep(ms))
+        .then(() => console.log("Sleep done!"))
+        .then(() => console.log("Switching to normal cursor"))
+        .then(changeCursor("default"));
 }
 
-function simulateCallToFunction() {sleep (3000);} 
+function simulateCallToFunction() {
+  sleep(3000);
+}
+    
 // The async version is provided below for 
 // contrast and comparison 
 /*
@@ -60,13 +61,12 @@ async function simulateCallToFunction() {
 // some initialization which are used in later functions
 // gitter related inits need to obtained by 
 // making the appropriate API calls
-function initDefaultIds() { 
-  document.getElementById('userID').value = 
-    `iliakan, jeresig, remy,
+function initDefaultIds() {
+    document.getElementById('userID').value =
+        `iliakan, jeresig, remy,
     joekzbee, *^, undefined, ###,
     GokulPrasath, parisudhaandireyaa`;
-  
-  document.getElementById('progressStatus').innerHTML = "Status Ok";
+
 }
 
 let gitterKey =
@@ -74,34 +74,35 @@ let gitterKey =
 let roomid =
     "570a5925187bb6f0eadebf05";
 let gUrl =
-    "https://api.gitter.im/v1/rooms/" + 
-    roomid + 
-    "/users?access_token=" + 
+    "https://api.gitter.im/v1/rooms/" +
+    roomid +
+    "/users?access_token=" +
     gitterKey;
 
 initDefaultIds();
 
 
-function getUserIdsFromGitterRoom(skip) { 
-  let userids = [];
-  return loadJson(gUrl + "&skip=" + skip).then(users => { 
-    for (var user of users) { 
-      userids.push(user.username);
-    }
-    return userids.join(", ");
-  });/*.then (userlist => { 
-    document.getElementById("userID").value = userlist;
-  });*/
+function getUserIdsFromGitterRoom(skip) {
+    let userids = [];
+    return loadJson(gUrl + "&skip=" + skip).then(users => {
+        for (var user of users) {
+            userids.push(user.username);
+        }
+        return userids.join(", ");
+    });
+    /*.then (userlist => { 
+        document.getElementById("userID").value = userlist;
+      });*/
 }
-  
-function changeProgressToBusy() { 
-    document.getElementById("userID").value = "";    
+
+function changeProgressToBusy() {
+    document.getElementById("userID").value = "";
     var pNode = document.getElementById("progressStatus");
-    pNode.innerHTML = "Please wait...."; 
+    pNode.innerHTML = "Please wait....";
     document.body.style.cursor = "wait";
 }
-  
-function changeProgressToCompleted() { 
+
+function changeProgressToCompleted() {
     var pNode = document.getElementById("progressStatus");
     pNode.innerHTML = 'Parallel requests done. Await results!';
     initDefaultIds();
@@ -112,22 +113,24 @@ function changeProgressToCompleted() {
 // activated from the button in the HTML page 
 // Why is it an async function - need to review
 //
-async function launchHttpRequestsToGitter() { 
+async function launchHttpRequestsToGitter() {
     // https://stackoverflow.com/a/38213213/307454    
-    changeProgressToBusy(); 
+    changeProgressToBusy();
     let skiplist = // [0, 30, 60, 90, 120, 150, 180, 210, 240] ; 
-      Array.from({length: 24}, (v, k) => k*30);
+        Array.from({
+            length: 24
+        }, (v, k) => k * 30);
 
-    Promise.all (
-      skiplist.map (
-        skip => getUserIdsFromGitterRoom(skip)
-          .then(userlist => fetchGitInfoForGitterList(userlist))
-      )
-    ).then (() => { 
-      sleep(5000)
-        .then(() => {
-          changeProgressToCompleted();
-        });
+    Promise.all(
+        skiplist.map(
+            skip => getUserIdsFromGitterRoom(skip)
+            .then(userlist => fetchGitInfoForGitterList(userlist))
+        )
+    ).then(() => {
+        sleep(5000)
+            .then(() => {
+                changeProgressToCompleted();
+            });
     });
 
     // an untested sequential approach to Http requests
@@ -140,29 +143,29 @@ async function launchHttpRequestsToGitter() {
 }
 
 function fetchGitInfoForGitterList(names) {
- 
-  names = names.split(",");
-  console.log(names);
 
-  let errorIDs = [];
+    names = names.split(",");
+    console.log(names);
 
-  Promise.all(
-    names.map(name => getGitInfoAndDisplay(name.trim())
-        .catch(err => processError(errorIDs, err, name))
-    )
-  ); // .then(await sleep (3000);
+    let errorIDs = [];
 
-  document.getElementById("userID").focus();
-  document.getElementById("userID").select();
+    Promise.all(
+        names.map(name => getGitInfoAndDisplay(name.trim())
+            .catch(err => processError(errorIDs, err, name))
+        )
+    ); // .then(await sleep (3000);
+
+    document.getElementById("userID").focus();
+    document.getElementById("userID").select();
 
 }
 
-function processError(errorIDs, err, name) { 
-  errorIDs.push(name);
-  console.log("Failed: " + errorIDs /*+ err */);
-  document.getElementById("errorIDs").append(name, ",");
+function processError(errorIDs, err, name) {
+    errorIDs.push(name);
+    console.log("Failed: " + errorIDs /*+ err */ );
+    document.getElementById("errorIDs").append(name, ",");
 }
-  
+
 // uses authObj which has been defined elsewhere in 
 // loadFile.js (to be renamed). It contains the private 
 // token which cannot be checked into github repos
@@ -170,39 +173,39 @@ function processError(errorIDs, err, name) {
 // so need to use module export and import 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export
 //
-function getGitInfoAndDisplay(name) {  
-  return loadJson(`https://api.github.com/users/${name}`, authObj)
-    .then(user => {
-      //alert(`Full name: ${user.name}.`); // (1)
-      addUserDetails(name, user);
-      return user;
-    })
-    .catch(err => {
-      if (err instanceof HttpError && err.response.status == 404) { // (2)
-        document.getElementById("userID").focus();
-      }
-      throw err;
-    });
+function getGitInfoAndDisplay(name) {
+    return loadJson(`https://api.github.com/users/${name}`, authObj)
+        .then(user => {
+            //alert(`Full name: ${user.name}.`); // (1)
+            addUserDetails(name, user);
+            return user;
+        })
+        .catch(err => {
+            if (err instanceof HttpError && err.response.status == 404) { // (2)
+                document.getElementById("userID").focus();
+            }
+            throw err;
+        });
 }
 
 function loadJson(url, data = {}) { // (2)
-  return fetch(url,data).then(response => {
-      if (response.status == 200) {
-        return response.json();
-      } else {
-        // what is thrown here has to be captured
-        // and made part of errorIDs? 
-        throw new HttpError(response);
-      }
+    return fetch(url, data).then(response => {
+        if (response.status == 200) {
+            return response.json();
+        } else {
+            // what is thrown here has to be captured
+            // and made part of errorIDs? 
+            throw new HttpError(response);
+        }
     })
 }
 
 class HttpError extends Error { // (1)
-  constructor(response) {
-    super(`${response.status} for ${response.url}`);
-    this.name = 'HttpError';
-    this.response = response;
-  }
+    constructor(response) {
+        super(`${response.status} for ${response.url}`);
+        this.name = 'HttpError';
+        this.response = response;
+    }
 }
 
 /*
@@ -213,78 +216,78 @@ class HttpError extends Error { // (1)
   </div>
 </div>
 */
-function addUserDetails(name, user) { 
-  let img = document.createElement('img');
-  img.src = user.avatar_url;
-  img.title = name + " == " + user.name;
-  
-  let figure = document.createElement('figure');
-  figure.class = "figure";  
-  let figcaption = document.createElement('figcaption');
-  figcaption.class = "figure-caption";
-  figcaption.textContent = name + ", " + user.name; 
-  
-  figure.append(img);
-  figure.append(figcaption);
-  
-  $('#githubTarget').prepend(figure);
-  document.getElementById("userID").focus()
-  document.getElementById("userID").select();
-    
+function addUserDetails(name, user) {
+    let img = document.createElement('img');
+    img.src = user.avatar_url;
+    img.title = name + " == " + user.name;
+
+    let figure = document.createElement('figure');
+    figure.class = "figure";
+    let figcaption = document.createElement('figcaption');
+    figcaption.class = "figure-caption";
+    figcaption.textContent = name + ", " + user.name;
+
+    figure.append(img);
+    figure.append(figcaption);
+
+    $('#githubTarget').prepend(figure);
+    document.getElementById("userID").focus()
+    document.getElementById("userID").select();
+
 }
 
 
-  
-  
+
+
 //------------------------
 //------------------------
 // Miscellaneous functions
 //------------------------
 //------------------------
-  
+
 function loadScript(src) {
-  return new Promise(function(resolve, reject) {
-    let script = document.createElement('script');
-    script.src = src;
+    return new Promise(function(resolve, reject) {
+        let script = document.createElement('script');
+        script.src = src;
 
-    script.onload = () => resolve(script);
-    script.onerror = () => reject(new Error("Script load error: " + src));
+        script.onload = () => resolve(script);
+        script.onerror = () => reject(new Error("Script load error: " + src));
 
-    document.head.append(script);
-  });
+        document.head.append(script);
+    });
 }
 
 //let promise5 = loadScript("https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.2.0/lodash.js");
 let promise5 = loadScript("loadFile.js");
 
 promise5.then(
-  script => {
-    //alert(`${script.src} is loaded!`);
-    getHtmlFile();
-  },
-  error => alert(`Error: ${error.message}`)
+    script => {
+        //alert(`${script.src} is loaded!`);
+        getHtmlFile();
+    },
+    error => alert(`Error: ${error.message}`)
 );
 
 promise5.then(script => {
-  //alert('One more handler to do something else!');
-  $("#scriptTarget").click(function(){
-    setText();
-  });
+    //alert('One more handler to do something else!');
+    $("#scriptTarget").click(function() {
+        setText();
+    });
 });
 
 
-function demoGitterList () { 
-  zoom.out();
+function demoGitterList() {
+    zoom.out();
 
-  let names = document.getElementById('userID').value; 
-  if (names.trim().length) 
-    fetchGitInfoForGitterList(names);
-  else {  
-    launchHttpRequestsToGitter();
-  }
+    let names = document.getElementById('userID').value;
+    if (names.trim().length)
+        fetchGitInfoForGitterList(names);
+    else {
+        launchHttpRequestsToGitter();
+    }
 }
 
-  
+
 // ------------------------------------------
 //
 //   LEGACY CODE 
@@ -292,7 +295,7 @@ function demoGitterList () {
 // ------------------------------------------
 // Left here for review and reflection
 //
-  
+
 /*
 var promise6 = new Promise(function(resolve, reject) {
 
@@ -307,22 +310,22 @@ var promise6 = new Promise(function(resolve, reject) {
 // .then…
 */
 
-function parallelGithubUsers() { 
-  
-  let names = document.getElementById('userID').value; 
-  if (names.indexOf(",") !== -1) { // is it a list?
-    names = names.split(",");
-    console.log(names);
-  }
-  let urls = names.map(name => 'https://api.github.com/users/'+ name.trim());
-  console.log(urls);
-  let requests = urls.map(url => fetch(url));
-  
-  Promise.all(requests)
-    .then(responses => responses.forEach(
-      response => alert(`${response.url}: ${response.status}`)
-    ));
-  
+function parallelGithubUsers() {
+
+    let names = document.getElementById('userID').value;
+    if (names.indexOf(",") !== -1) { // is it a list?
+        names = names.split(",");
+        console.log(names);
+    }
+    let urls = names.map(name => 'https://api.github.com/users/' + name.trim());
+    console.log(urls);
+    let requests = urls.map(url => fetch(url));
+
+    Promise.all(requests)
+        .then(responses => responses.forEach(
+            response => alert(`${response.url}: ${response.status}`)
+        ));
+
 }
 
 
@@ -336,17 +339,17 @@ function parallelGithubUsers() {
 // Using Promises for asynchronous code 
 // https://javascript.info/promise-basics#example-loadscript
 
-  /*
-  function loadScript(src, callback) {
-    let script = document.createElement('script');
-    script.src = src;
+/*
+function loadScript(src, callback) {
+  let script = document.createElement('script');
+  script.src = src;
 
-    script.onload = () => callback(null, script);
-    script.onerror = () => callback(new Error(`Script load error ` + src));
+  script.onload = () => callback(null, script);
+  script.onerror = () => callback(new Error(`Script load error ` + src));
 
-    document.head.append(script);
-  }
-  */
+  document.head.append(script);
+}
+*/
 
 /*
 fetch('/user.json')
@@ -447,24 +450,5 @@ let promise = new Promise(function(resolve, reject) {
   console.log("Hello, World!"); 
   
 });
-
-*/
-
-
-
-
-
-/*
-
-// final tasks
-
-function delay(ms) {
-  // your code
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-delay(3000).then(() => alert('runs after 3 seconds'));
-
-console.log("Done");
 
 */
