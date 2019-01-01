@@ -8,13 +8,27 @@
   
 console.log("Explore Promises"); 
 
-function sleep(ms) {
-  console.log("Sleep function called for " + ms + " ms");
-
+function sleep2(ms) {
+  console.log("Sleep function called for " + ms + " ms\n");
   return new Promise(resolve => setTimeout(resolve, ms))
     .then(() => console.log("Sleep done!" ));
 }
-  
+
+/* a verbose sleep function that uses three promises
+   that have been chained together
+ 
+*/
+function sleep(ms) {
+
+  const pSleep = ms => () => 
+    new Promise((resolve, reject) => window.setTimeout(resolve, ms));
+
+  return Promise.resolve()
+    .then(() => console.log("Sleep function called for " + ms + " ms\n"))
+    .then(pSleep(ms))
+    .then(() => console.log("Sleep done!"));  
+}
+
 /*
 async function simulateCallToFunction() { 
     console.log ("Switching to busy cursor");
