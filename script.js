@@ -5,7 +5,9 @@
   return fetch(url)
     .then(response => response.json());
 }*/
-  
+
+var authObj; // for accessing the GithubAPI 
+
 console.log("Explore Promises"); 
 
 function sleep2(ms) {
@@ -136,7 +138,7 @@ function addUserDetails(name, user) {
 
 }
 
-function getUserIds(skip) { 
+function getUserIdsFromGitterRoom(skip) { 
   let userids = [];
   return loadJson(gUrl + "&skip=" + skip).then(users => { 
     for (var user of users) { 
@@ -156,7 +158,7 @@ function demoGitterList () {
 
   let names = document.getElementById('userID').value; 
   if (names.trim().length) 
-    demoGithubUserList(names);
+    fetchGitInfoForGitterList(names);
   else {  
     launchHttpRequestsToGitter();
   }
@@ -187,8 +189,8 @@ async function launchHttpRequestsToGitter() {
 
     Promise.all (
       skiplist.map (
-        skip => getUserIds(skip)
-          .then(userlist => demoGithubUserList(userlist))
+        skip => getUserIdsFromGitterRoom(skip)
+          .then(userlist => fetchGitInfoForGitterList(userlist))
       )
     ).then (() => { 
       sleep(5000)
@@ -200,9 +202,9 @@ async function launchHttpRequestsToGitter() {
 
     // an untested sequential approach to Http requests
     /*for (var i = 0; i < skiplist.length; i++) {
-      getUserIds(skiplist[i])
+      getUserIdsFromGitterRoom(skiplist[i])
         .then(userlist =>
-              demoGithubUserList(userlist));
+              fetchGitInfoForGitterList(userlist));
       //await sleep(9000);
     }*/
 }
@@ -213,10 +215,8 @@ function processError(errorIDs, err, name) {
   document.getElementById("errorIDs").append(name, ",");
 }
   
-function demoGithubUserList(names) {
-  //parallelGithubUsers();
-  //getUserIds(skip);
-
+function fetchGitInfoForGitterList(names) {
+ 
   names = names.split(",");
   console.log(names);
 
@@ -224,7 +224,7 @@ function demoGithubUserList(names) {
 
   let requests = names;
   Promise.all(
-    requests.map(name => demoGithubUser(name.trim())
+    requests.map(name => getGitInfoAndDisplay(name.trim())
         .catch(err => processError(errorIDs, err, name))
     )
   ); // .then(await sleep (3000);
@@ -241,7 +241,7 @@ function demoGithubUserList(names) {
 // so need to use module export and import 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export
 //
-function demoGithubUser(name) {
+function getGitInfoAndDisplay(name) {
   //let name = prompt("Enter a name?", "iliakan");
   //let name = document.getElementById('userID').value;
   
