@@ -41,11 +41,12 @@ function sleep(ms) {
         .then(changeCursor("default"));
 }
 
+// activated by the "Test" button in the HTML
 function simulateCallToFunction() {
   sleep(3000);
 }
-    
-// The async version is provided below for 
+
+// The async-await version is provided below for 
 // contrast and comparison 
 /*
 async function simulateCallToFunction() { 
@@ -67,6 +68,10 @@ function initDefaultIds() {
     joekzbee, *^, undefined, ###,
     GokulPrasath, parisudhaandireyaa`;
 
+    /*sleep(15000)
+      .then(() => 
+            document.getElementById('progressStatus').innerHTML = "Status Ok");
+    */
 }
 
 let gitterKey =
@@ -82,32 +87,6 @@ let gUrl =
 initDefaultIds();
 
 
-function getUserIdsFromGitterRoom(skip) {
-    let userids = [];
-    return loadJson(gUrl + "&skip=" + skip).then(users => {
-        for (var user of users) {
-            userids.push(user.username);
-        }
-        return userids.join(", ");
-    });
-    /*.then (userlist => { 
-        document.getElementById("userID").value = userlist;
-      });*/
-}
-
-function changeProgressToBusy() {
-    document.getElementById("userID").value = "";
-    var pNode = document.getElementById("progressStatus");
-    pNode.innerHTML = "Please wait....";
-    document.body.style.cursor = "wait";
-}
-
-function changeProgressToCompleted() {
-    var pNode = document.getElementById("progressStatus");
-    pNode.innerHTML = 'Parallel requests done. Await results!';
-    initDefaultIds();
-    document.body.style.cursor = "default";
-}
 
 // the main function that launches the parallel promise calls
 // activated from the button in the HTML page 
@@ -140,7 +119,60 @@ async function launchHttpRequestsToGitter() {
               fetchGitInfoForGitterList(userlist));
       //await sleep(9000);
     }*/
+  
+    function changeProgressToBusy() {
+        document.getElementById("userID").value = "";
+        var pNode = document.getElementById("progressStatus");
+        pNode.innerHTML = "Please wait....";
+        document.body.style.cursor = "wait";
+    }
+
+    function changeProgressToCompleted() {
+        var pNode = document.getElementById("progressStatus");
+        pNode.innerHTML = 'Parallel requests done. Await results!';
+        initDefaultIds();
+        document.body.style.cursor = "default";
+    }
+
 }
+
+// The Http calls to Gitter and Github are routed
+// through this function 
+function loadJson(url, data = {}) { // (2)
+    return fetch(url, data).then(response => {
+        if (response.status == 200) {
+            return response.json();
+        } else {
+            // what is thrown here has to be captured
+            // and made part of errorIDs? 
+            throw new HttpError(response);
+        }
+    })
+  
+    // helper class
+    class HttpError extends Error { // (1)
+        constructor(response) {
+            super(`${response.status} for ${response.url}`);
+            this.name = 'HttpError';
+            this.response = response;
+        }
+    }
+}
+
+
+function getUserIdsFromGitterRoom(skip) {
+    let userids = [];
+    return loadJson(gUrl + "&skip=" + skip).then(users => {
+        for (var user of users) {
+            userids.push(user.username);
+        }
+        return userids.join(", ");
+    });
+    /*.then (userlist => { 
+        document.getElementById("userID").value = userlist;
+      });*/
+}
+
 
 function fetchGitInfoForGitterList(names) {
 
@@ -158,13 +190,16 @@ function fetchGitInfoForGitterList(names) {
     document.getElementById("userID").focus();
     document.getElementById("userID").select();
 
+    
+    // helper function 
+    function processError(errorIDs, err, name) {
+        errorIDs.push(name);
+        console.log("Failed: " + errorIDs /*+ err */ );
+        document.getElementById("errorIDs").append(name, ",");
+    }
+
 }
 
-function processError(errorIDs, err, name) {
-    errorIDs.push(name);
-    console.log("Failed: " + errorIDs /*+ err */ );
-    document.getElementById("errorIDs").append(name, ",");
-}
 
 // uses authObj which has been defined elsewhere in 
 // loadFile.js (to be renamed). It contains the private 
@@ -186,57 +221,37 @@ function getGitInfoAndDisplay(name) {
             }
             throw err;
         });
-}
 
-function loadJson(url, data = {}) { // (2)
-    return fetch(url, data).then(response => {
-        if (response.status == 200) {
-            return response.json();
-        } else {
-            // what is thrown here has to be captured
-            // and made part of errorIDs? 
-            throw new HttpError(response);
-        }
-    })
-}
+    /*
+    <div class="container">
+      <img src="img_avatar.png" alt="Avatar" class="image" style="width:100%">
+      <div class="middle">
+        <div class="text">John Doe</div>
+      </div>
+    </div>
+    */
+    // helper function
+    function addUserDetails(name, user) {
+        let img = document.createElement('img');
+        img.src = user.avatar_url;
+        img.title = name + " == " + user.name;
 
-class HttpError extends Error { // (1)
-    constructor(response) {
-        super(`${response.status} for ${response.url}`);
-        this.name = 'HttpError';
-        this.response = response;
+        let figure = document.createElement('figure');
+        figure.class = "figure";
+        let figcaption = document.createElement('figcaption');
+        figcaption.class = "figure-caption";
+        figcaption.textContent = name + ", " + user.name;
+
+        figure.append(img);
+        figure.append(figcaption);
+
+        $('#githubTarget').prepend(figure);
+        document.getElementById("userID").focus()
+        document.getElementById("userID").select();
+
     }
-}
-
-/*
-<div class="container">
-  <img src="img_avatar.png" alt="Avatar" class="image" style="width:100%">
-  <div class="middle">
-    <div class="text">John Doe</div>
-  </div>
-</div>
-*/
-function addUserDetails(name, user) {
-    let img = document.createElement('img');
-    img.src = user.avatar_url;
-    img.title = name + " == " + user.name;
-
-    let figure = document.createElement('figure');
-    figure.class = "figure";
-    let figcaption = document.createElement('figcaption');
-    figcaption.class = "figure-caption";
-    figcaption.textContent = name + ", " + user.name;
-
-    figure.append(img);
-    figure.append(figcaption);
-
-    $('#githubTarget').prepend(figure);
-    document.getElementById("userID").focus()
-    document.getElementById("userID").select();
 
 }
-
-
 
 
 //------------------------
