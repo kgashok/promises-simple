@@ -21,12 +21,24 @@ function sleep2(ms) {
 function sleep(ms) {
 
   const pSleep = ms => () => 
-    new Promise((resolve, reject) => window.setTimeout(resolve, ms));
+    new Promise((resolve, reject) => 
+                window.setTimeout(resolve, ms)
+    );
 
+  const changeCursor = c => () => 
+    new Promise((resolve, reject) => {
+      document.body.style.cursor = c; 
+      resolve()
+    });
+  
   return Promise.resolve()
+    .then(() => console.log("Switching to busy cursor"))
+    .then(changeCursor("wait"))
     .then(() => console.log("Sleep function called for " + ms + " ms\n"))
     .then(pSleep(ms))
-    .then(() => console.log("Sleep done!"));  
+    .then(() => console.log("Sleep done!"))
+    .then(() => console.log("Switching to normal cursor"))
+    .then(changeCursor("default"));
 }
 
 /*
@@ -39,7 +51,9 @@ async function simulateCallToFunction() {
 }
 */
 
-function simulateCallToFunction() { 
+function simulateCallToFunction() {sleep (3000);} 
+
+function simulateCallToFunction2() { 
   console.log("switching to busy cursor");
   document.body.style.cursor = "wait";  
   sleep(3000)
