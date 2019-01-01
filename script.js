@@ -16,21 +16,23 @@ function sleep2(ms) {
 
 /* a verbose sleep function that uses three promises
    that have been chained together
+   
+   Credits: https://stackoverflow.com/a/53995436/307454
  
 */
 function sleep(ms) {
 
   const pSleep = ms => () => 
-    new Promise((resolve, reject) => 
-                window.setTimeout(resolve, ms)
-    );
+    new Promise((resolve, reject) => window.setTimeout(resolve, ms));
 
   const changeCursor = c => () => 
     new Promise((resolve, reject) => {
       document.body.style.cursor = c; 
-      resolve()
+      resolve();
     });
-  
+
+  let names = document.getElementById('userID').value; 
+
   return Promise.resolve()
     .then(() => console.log("Switching to busy cursor"))
     .then(changeCursor("wait"))
@@ -205,30 +207,25 @@ async function launchHttpRequestsToGitter() {
     }*/
 }
 
-
-function demoGithubUserList(names) { 
+function processError(errorIDs, err, name) { 
+  errorIDs.push(name);
+  console.log("Failed: " + errorIDs /*+ err */);
+  document.getElementById("errorIDs").append(name, ",");
+}
+  
+function demoGithubUserList(names) {
   //parallelGithubUsers();
-  //getUserIds(skip);  
-    
-  names = names.split(",");
-  console.log(names);    
+  //getUserIds(skip);
 
-  let errorIDs = []; 
+  names = names.split(",");
+  console.log(names);
+
+  let errorIDs = [];
 
   let requests = names;
   Promise.all(
-    requests.map(
-      name => 
-        demoGithubUser(name.trim())
-          .catch(err => { 
-            errorIDs.push(name);
-            console.log("Failed: " + errorIDs /*+ err */);
-            document.getElementById("errorIDs")
-                    .append(name, ",");
-                    //.innerHTML = 
-                    //  "<b>" + errorIDs + "</b>";
-          }
-        )
+    requests.map(name => demoGithubUser(name.trim())
+        .catch(err => processError(errorIDs, err, name))
     )
   ); // .then(await sleep (3000);
 
