@@ -93,8 +93,11 @@ initDefaultIds();
 // Why is it an async function - need to review
 //
 async function launchHttpRequestsToGitter() {
-    // https://stackoverflow.com/a/38213213/307454    
     changeProgressToBusy();
+
+    // https://stackoverflow.com/a/38213213/307454
+    // this is quite arbitrary - Gitter room ID count must be 
+    // used to calculate this properly 
     let skiplist = // [0, 30, 60, 90, 120, 150, 180, 210, 240] ; 
         Array.from({
             length: 24
@@ -102,7 +105,7 @@ async function launchHttpRequestsToGitter() {
 
     Promise.all(
         skiplist.map(
-            skip => getUserIdsFromGitterRoom(skip)
+            skip => fetchUserIdsFromGitterRoom(skip)
             .then(userlist => fetchGitInfoForGitterList(userlist))
         )
     ).then(() => {
@@ -114,12 +117,13 @@ async function launchHttpRequestsToGitter() {
 
     // an untested sequential approach to Http requests
     /*for (var i = 0; i < skiplist.length; i++) {
-      getUserIdsFromGitterRoom(skiplist[i])
+      fetchUserIdsFromGitterRoom(skiplist[i])
         .then(userlist =>
               fetchGitInfoForGitterList(userlist));
       //await sleep(9000);
     }*/
   
+    // helper function 1
     function changeProgressToBusy() {
         document.getElementById("userID").value = "";
         var pNode = document.getElementById("progressStatus");
@@ -127,6 +131,7 @@ async function launchHttpRequestsToGitter() {
         document.body.style.cursor = "wait";
     }
 
+    // helper function 2
     function changeProgressToCompleted() {
         var pNode = document.getElementById("progressStatus");
         pNode.innerHTML = 'Parallel requests done. Await results!';
@@ -160,7 +165,7 @@ function loadJson(url, data = {}) { // (2)
 }
 
 
-function getUserIdsFromGitterRoom(skip) {
+function fetchUserIdsFromGitterRoom(skip) {
     let userids = [];
     return loadJson(gUrl + "&skip=" + skip).then(users => {
         for (var user of users) {
