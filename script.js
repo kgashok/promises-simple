@@ -137,7 +137,7 @@ function launchHttpRequestsToGitter() {
             skip => fetchUserIdsFromGitterRoom(skip)
             .then(userlist => fetchGitInfoForGitterList(userlist))
         )
-    ).then(() => changeProgressToCompleted());
+      ).then(()=>sleep(1000)).then(()=> changeProgressToCompleted());
   
     // helper function 1
     function changeProgressToBusy() {
