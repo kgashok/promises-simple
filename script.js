@@ -121,8 +121,7 @@ function launchSampleGitterList() {
 // activated from the button in the HTML page 
 // Why is it an async function - need to review
 //
-async function launchHttpRequestsToGitter() {
-    changeProgressToBusy();
+function launchHttpRequestsToGitter() {
     count = 0; errors = 0;
 
     // https://stackoverflow.com/a/38213213/307454
@@ -133,17 +132,13 @@ async function launchHttpRequestsToGitter() {
             length: 24
         }, (v, k) => k * 30);
 
+    changeProgressToBusy();
     Promise.all(
         skiplist.map(
             skip => fetchUserIdsFromGitterRoom(skip)
             .then(userlist => fetchGitInfoForGitterList(userlist))
         )
-    ).then(() => {
-        sleep(5000)
-            .then(() => {
-                changeProgressToCompleted();
-            });
-    });
+    ).then(() => changeProgressToCompleted());
   
     // helper function 1
     function changeProgressToBusy() {
