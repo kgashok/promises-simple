@@ -160,29 +160,6 @@ async function launchHttpRequestsToGitter() {
 
 }
 
-// The Http calls to Gitter and Github are routed
-// through this function 
-function loadJson(url, data = {}) { // (2)
-    return fetch(url, data).then(response => {
-        if (response.status == 200) {
-            return response.json();
-        } else {
-            // what is thrown here has to be captured
-            // and made part of errorIDs? 
-            throw new HttpError(response);
-        }
-    })
-}
-// helper class
-class HttpError extends Error { // (1)
-    constructor(response) {
-        super(`${response.status} for ${response.url}`);
-        this.name = 'HttpError';
-        this.response = response;
-    }
-}
-
-
 function fetchUserIdsFromGitterRoom(skip) {
     let userids = [];
     return loadJson(gUrl + "&skip=" + skip).then(users => {
@@ -309,9 +286,14 @@ function getGitInfoForUserAndDisplay(name) {
         })
         .catch(err => {
             if (err instanceof HttpError && err.response.status == 404) { // (2)
-                //document.getElementById("userID").focus();
+                // document.getElementById("userID").focus();
                 throw err;
             }
+            else { 
+              // how to handle other errors?
+              throw err;
+            } 
+              
         });
 
     /*
@@ -343,6 +325,28 @@ function getGitInfoForUserAndDisplay(name) {
 
     }
 
+}
+
+// The Http calls to Gitter and Github are routed
+// through this function 
+function loadJson(url, data = {}) { // (2)
+    return fetch(url, data).then(response => {
+        if (response.status == 200) {
+            return response.json();
+        } else {
+            // what is thrown here has to be captured
+            // and made part of errorIDs? 
+            throw new HttpError(response);
+        }
+    })
+}
+// helper class
+class HttpError extends Error { // (1)
+    constructor(response) {
+        super(`${response.status} for ${response.url}`);
+        this.name = 'HttpError';
+        this.response = response;
+    }
 }
 
 
