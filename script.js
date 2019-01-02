@@ -95,9 +95,21 @@ function launchSampleGitterList() {
     // count = 0; errors = 0; 
     zoom.out();
 
+    // helper function 1
+    const changeCursor = c => () =>
+      new Promise((resolve, reject) => {
+          document.body.style.cursor = c;
+          resolve();
+      });
+  
     let names = document.getElementById('userID').value;
-    if (names.trim().length)
-        fetchGitInfoForGitterList(names);
+    if (names.trim().length) {
+      Promise.resolve()
+        .then(changeCursor("wait"))
+              .then(() => fetchGitInfoForGitterList(names)
+                    .then(changeCursor("default"))
+              );
+    }
     else {
         var pNode = document.getElementById("progressStatus");
         pNode.innerHTML = "Enter some Gitter IDs!";
@@ -144,7 +156,8 @@ async function launchHttpRequestsToGitter() {
     // helper function 2
     function changeProgressToCompleted() {
         var pNode = document.getElementById("progressStatus");
-        pNode.append('Parallel requests launched. Await results! ');
+        pNode.append("Parallel requests completed! ");
+        pNode.append("Errors: " + errorIDs.length);
         initDefaultIds();
         document.body.style.cursor = "default";
     }
@@ -178,13 +191,12 @@ function fetchGitInfoForGitterList(names) {
     names = names.split(",");
     console.log(names);
 
-    // helper function 1
     const changeCursor = c => () =>
       new Promise((resolve, reject) => {
           document.body.style.cursor = c;
           resolve();
       });
-  
+      
     // https://quasar-rate.glitch.me/chapter-3/3-08-aggregate-all-outcomes.html
     // need to be applied and improved upon 
     var requests = 
@@ -194,25 +206,23 @@ function fetchGitInfoForGitterList(names) {
                  );
                             
     // Update status message once all requests are finished
-    Promise.resolve()
+    /*Promise.resolve()
       .then(changeCursor("wait"))
-      .then(() => settled(requests).then(function(outcomes) { 
-            outcomes.forEach(function (outcome) {
-                if (outcome.state == 'fulfilled') count++;
-                else errors++;
-            });
-            console.log(count + " processed"); 
-            document.getElementById("progressStatus").append(count + " processed...");
-            //document.getElementById("progressStatus").append(" errors ", errorIDs.length);
-      })
-      .then(changeCursor("default"))
-    );
+      .then(() => */
+    return settled(requests).then(function(outcomes) { 
+        outcomes.forEach(function (outcome) {
+            if (outcome.state == 'fulfilled') count++;
+            else errors++;
+        });
+        console.log(count + " processed"); 
+        document.getElementById("progressStatus").append(count + " processed...");
+    });
+    /*  .then(changeCursor("default"))
+    );*/
   
     document.getElementById("userID").focus();
     document.getElementById("userID").select();
 
-    
-    
     // helper function 2
     function settled(promises) {
       var alwaysFulFilled = promises.map (function (p) {
@@ -236,40 +246,6 @@ function fetchGitInfoForGitterList(names) {
     }
     
 }
-
-// this function processes a test list of Github IDs to 
-// mimic what happens elsewhere in a parallel promise execution
-function fetchGitInfoForGitterList2(names) {
-
-    names = names.split(",");
-    console.log(names);
-  
-    // this is where https://quasar-rate.glitch.me/chapter-3/3-07-aggregate-tasks.html
-    // and https://quasar-rate.glitch.me/chapter-3/3-08-aggregate-all-outcomes.html
-    // need to be applied and improved upon 
-    Promise.all(
-        names.map(name => getGitInfoForUserAndDisplay(name.trim())
-                  .catch(err => processError(err, name))
-                  )
-    ).then(() => {
-      console.log("Parallel fetch completed"); 
-      document.getElementById("progressStatus").append(" errors ", errorIDs.length);
-    });
-    // .then(await sleep (3000);
-
-    document.getElementById("userID").focus();
-    document.getElementById("userID").select();
-
-    
-    // helper function 
-    function processError(err, name) {
-        errorIDs.push(name);
-        console.log("Failed: " + errorIDs /*+ err */ );
-        document.getElementById("errorIDs").append(name, ",");
-    }
-
-}
-
 
 // uses authObj which has been defined elsewhere in 
 // loadFile.js (to be renamed). It contains the private 
@@ -350,6 +326,39 @@ class HttpError extends Error { // (1)
     }
 }
 
+
+// this function processes a test list of Github IDs to 
+// mimic what happens elsewhere in a parallel promise execution
+function fetchGitInfoForGitterList2(names) {
+
+    names = names.split(",");
+    console.log(names);
+  
+    // this is where https://quasar-rate.glitch.me/chapter-3/3-07-aggregate-tasks.html
+    // and https://quasar-rate.glitch.me/chapter-3/3-08-aggregate-all-outcomes.html
+    // need to be applied and improved upon 
+    Promise.all(
+        names.map(name => getGitInfoForUserAndDisplay(name.trim())
+                  .catch(err => processError(err, name))
+                  )
+    ).then(() => {
+      console.log("Parallel fetch completed"); 
+      document.getElementById("progressStatus").append(" errors ", errorIDs.length);
+    });
+    // .then(await sleep (3000);
+
+    document.getElementById("userID").focus();
+    document.getElementById("userID").select();
+
+    
+    // helper function 
+    function processError(err, name) {
+        errorIDs.push(name);
+        console.log("Failed: " + errorIDs /*+ err */ );
+        document.getElementById("errorIDs").append(name, ",");
+    }
+
+}
 
 //------------------------
 //------------------------

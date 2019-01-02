@@ -38,6 +38,11 @@
       </em>
       <br>
       <br>
+      <div id="progressStatus"> Status ok </div>
+      <p>
+        <button id = "simulateTest" onclick="simulateCallToFunction()">Test</button>
+        Open the console, and see the prompts!
+      </p>
       <input type="text" id="userID" name="b" class="inputDialog" 
              placeholder="enter Gitter IDs">
       <button id="useridInput" onclick="launchSampleGitterList()">Submit</button>
@@ -46,11 +51,6 @@
         <input type="text" id="gitterRoom" placeholder="kgisl/campsite" disabled>
         <button id="loadGitter" onclick="launchHttpRequestsToGitter()">Load!</button>
       </p>
-      <p>
-        <button id = "simulateTest" onclick="simulateCallToFunction()">Test</button>
-        Open the console, and see the prompts!
-      </p>
-      <div id="progressStatus"> Status ok </div>
       <div id="errorTarget">
         <br>
         <span>
