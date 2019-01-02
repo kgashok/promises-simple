@@ -104,11 +104,10 @@ function launchSampleGitterList() {
   
     let names = document.getElementById('userID').value;
     if (names.trim().length) {
-      Promise.resolve()
-        .then(changeCursor("wait"))
-              .then(() => fetchGitInfoForGitterList(names)
-                    .then(changeCursor("default"))
-              );
+        Promise.resolve()
+          .then(changeCursor("wait"))
+          .then(() => fetchGitInfoForGitterList(names))
+          .then(changeCursor("default"));
     }
     else {
         var pNode = document.getElementById("progressStatus");
