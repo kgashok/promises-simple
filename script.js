@@ -104,6 +104,7 @@ function launchSampleGitterList() {
   
     let names = document.getElementById('userID').value;
     if (names.trim().length) {
+      
         Promise.resolve()
           .then(changeCursor("wait"))
           .then(() => fetchGitInfoForGitterList(names))
@@ -199,10 +200,6 @@ function fetchGitInfoForGitterList(names) {
                   .catch(err => processError(err, name))
                  );
                             
-    // Update status message once all requests are finished
-    /*Promise.resolve()
-      .then(changeCursor("wait"))
-      .then(() => */
     return settled(requests).then(function(outcomes) { 
         outcomes.forEach(function (outcome) {
             if (outcome.state == 'fulfilled') count++;
@@ -211,8 +208,6 @@ function fetchGitInfoForGitterList(names) {
         console.log(count + " processed"); 
         document.getElementById("progressStatus").append(count + " processed...");
     });
-    /*  .then(changeCursor("default"))
-    );*/
   
     document.getElementById("userID").focus();
     document.getElementById("userID").select();
@@ -222,9 +217,11 @@ function fetchGitInfoForGitterList(names) {
       var alwaysFulFilled = promises.map (function (p) {
         return p.then(
           function onFulFilled(value) {
+            //console.log("inside onfulfilled", value); 
             return { state: 'fulfilled', value: value};
           },
           function onRejected(reason) { 
+            //console.log("inside onRejected", reason); 
             return { state: 'rejected', reason: reason};
           });
       });
@@ -254,7 +251,8 @@ function getGitInfoForUserAndDisplay(name) {
             //alert(`Full name: ${user.name}.`); // (1)
             addUserDetails(name, user);
             return user;
-        })
+        });
+        /*
         .catch(err => {
             if (err instanceof HttpError && err.response.status == 404) { // (2)
                 // document.getElementById("userID").focus();
@@ -266,6 +264,7 @@ function getGitInfoForUserAndDisplay(name) {
             } 
               
         });
+        */
 
     /*
     <div class="container">
@@ -314,6 +313,7 @@ function loadJson(url, data = {}) { // (2)
 // helper class
 class HttpError extends Error { // (1)
     constructor(response) {
+        //console.log(response);
         super(`${response.status} for ${response.url}`);
         this.name = 'HttpError';
         this.response = response;
