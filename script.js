@@ -198,8 +198,11 @@ function fetchGitInfoForGitterList(names) {
 
     let errorIDs = [];
 
+    // this is where https://quasar-rate.glitch.me/chapter-3/3-07-aggregate-tasks.html
+    // and https://quasar-rate.glitch.me/chapter-3/3-08-aggregate-all-outcomes.html
+    // need to be applied and improved upon 
     Promise.all(
-        names.map(name => getGitInfoAndDisplay(name.trim())
+        names.map(name => getGitInfoForUserAndDisplay(name.trim())
             .catch(err => processError(errorIDs, err, name))
         )
     ); // .then(await sleep (3000);
@@ -225,7 +228,7 @@ function fetchGitInfoForGitterList(names) {
 // so need to use module export and import 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export
 //
-function getGitInfoAndDisplay(name) {
+function getGitInfoForUserAndDisplay(name) {
     return loadJson(`https://api.github.com/users/${name}`, authObj)
         .then(user => {
             //alert(`Full name: ${user.name}.`); // (1)
