@@ -202,7 +202,8 @@ function fetchGitInfoForGitterList(names) {
                 else errors++;
             });
             console.log(count + " processed"); 
-            document.getElementById("progressStatus").append(" errors ", errorIDs.length);
+            document.getElementById("progressStatus").append(count + " processed...");
+            //document.getElementById("progressStatus").append(" errors ", errorIDs.length);
       })
       .then(changeCursor("default"))
     );
