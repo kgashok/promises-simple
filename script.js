@@ -197,15 +197,16 @@ function fetchGitInfoForGitterList(names) {
     console.log(names);
 
     let errorIDs = [];
-
+  
     // this is where https://quasar-rate.glitch.me/chapter-3/3-07-aggregate-tasks.html
     // and https://quasar-rate.glitch.me/chapter-3/3-08-aggregate-all-outcomes.html
     // need to be applied and improved upon 
     Promise.all(
         names.map(name => getGitInfoForUserAndDisplay(name.trim())
-            .catch(err => processError(errorIDs, err, name))
+             .catch(err => processError(errorIDs, err, name))
         )
-    ); // .then(await sleep (3000);
+    ).then(() => console.log("Errors found: ", errorIDs.length)); 
+    // .then(await sleep (3000);
 
     document.getElementById("userID").focus();
     document.getElementById("userID").select();
