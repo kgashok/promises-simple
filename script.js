@@ -192,23 +192,22 @@ function fetchUserIdsFromGitterRoom(skip) {
 
 // this function processes a test list of Github IDs to 
 // mimic what happens elsewhere in a parallel promise execution
+var errorIDs = [];
 function fetchGitInfoForGitterList(names) {
 
     names = names.split(",");
     console.log(names);
-
-    let errorIDs = [];
   
     // this is where https://quasar-rate.glitch.me/chapter-3/3-07-aggregate-tasks.html
     // and https://quasar-rate.glitch.me/chapter-3/3-08-aggregate-all-outcomes.html
     // need to be applied and improved upon 
     Promise.all(
         names.map(name => getGitInfoForUserAndDisplay(name.trim())
-                  .catch(err => processError(errorIDs, err, name))
+                  .catch(err => processError(err, name))
                   )
     ).then(() => {
-      console.log("Parallel GitIDs info fetch completed"); 
-      document.getElementById("progressStatus").append("Fetch done...");
+      console.log("Parallel fetch completed"); 
+      document.getElementById("progressStatus").append(" errors ", errorIDs.length);
     });
     // .then(await sleep (3000);
 
@@ -217,7 +216,7 @@ function fetchGitInfoForGitterList(names) {
 
     
     // helper function 
-    function processError(errorIDs, err, name) {
+    function processError(err, name) {
         errorIDs.push(name);
         console.log("Failed: " + errorIDs /*+ err */ );
         document.getElementById("errorIDs").append(name, ",");
