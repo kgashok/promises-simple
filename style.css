@@ -34,7 +34,8 @@ header {
   border-color: darkGray;
   background-color: snow;
   color: green;
-  font-size: 1.5em;
+  font-size: .8em;
+  height: auto; 
 }
 
 figure { 

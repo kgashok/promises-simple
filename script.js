@@ -146,7 +146,7 @@ async function launchHttpRequestsToGitter() {
     // helper function 2
     function changeProgressToCompleted() {
         var pNode = document.getElementById("progressStatus");
-        pNode.innerHTML = 'Parallel requests done. Await results!';
+        pNode.append('Parallel requests launched. Await results! ');
         initDefaultIds();
         document.body.style.cursor = "default";
     }
@@ -190,7 +190,8 @@ function fetchUserIdsFromGitterRoom(skip) {
       });*/
 }
 
-
+// this function processes a test list of Github IDs to 
+// mimic what happens elsewhere in a parallel promise execution
 function fetchGitInfoForGitterList(names) {
 
     names = names.split(",");
@@ -203,9 +204,12 @@ function fetchGitInfoForGitterList(names) {
     // need to be applied and improved upon 
     Promise.all(
         names.map(name => getGitInfoForUserAndDisplay(name.trim())
-             .catch(err => processError(errorIDs, err, name))
-        )
-    ).then(() => console.log("Errors found: ", errorIDs.length)); 
+                  .catch(err => processError(errorIDs, err, name))
+                  )
+    ).then(() => {
+      console.log("Parallel GitIDs info fetch completed"); 
+      document.getElementById("progressStatus").append("Fetch done...");
+    });
     // .then(await sleep (3000);
 
     document.getElementById("userID").focus();
