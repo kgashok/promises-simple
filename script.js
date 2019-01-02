@@ -6,6 +6,9 @@
     .then(response => response.json());
 }*/
 var authObj; // for accessing the GithubAPI 
+var count = 0, errors = 0; 
+var errorIDs = [];
+
 
 console.log("Explore Promises");
 
@@ -36,6 +39,7 @@ function sleep(ms) {
         .then(changeCursor("wait"))
         .then(() => console.log("Sleep function called for " + ms + " ms\n"))
         .then(pSleep(ms))
+        //.then(() => launchSampleGitterList())
         .then(() => console.log("Sleep done!"))
         .then(() => console.log("Switching to normal cursor"))
         .then(changeCursor("default"));
@@ -88,6 +92,7 @@ initDefaultIds();
 
 
 function launchSampleGitterList() {
+    // count = 0; errors = 0; 
     zoom.out();
 
     let names = document.getElementById('userID').value;
@@ -106,6 +111,7 @@ function launchSampleGitterList() {
 //
 async function launchHttpRequestsToGitter() {
     changeProgressToBusy();
+    count = 0; errors = 0;
 
     // https://stackoverflow.com/a/38213213/307454
     // this is quite arbitrary - Gitter room ID count must be 
@@ -126,14 +132,6 @@ async function launchHttpRequestsToGitter() {
                 changeProgressToCompleted();
             });
     });
-
-    // an untested sequential approach to Http requests
-    /*for (var i = 0; i < skiplist.length; i++) {
-      fetchUserIdsFromGitterRoom(skiplist[i])
-        .then(userlist =>
-              fetchGitInfoForGitterList(userlist));
-      //await sleep(9000);
-    }*/
   
     // helper function 1
     function changeProgressToBusy() {
@@ -150,6 +148,15 @@ async function launchHttpRequestsToGitter() {
         initDefaultIds();
         document.body.style.cursor = "default";
     }
+  
+    // an untested sequential approach to Http requests
+    /*for (var i = 0; i < skiplist.length; i++) {
+      fetchUserIdsFromGitterRoom(skiplist[i])
+        .then(userlist =>
+              fetchGitInfoForGitterList(userlist));
+      //await sleep(9000);
+    }*/
+
 
 }
 
@@ -165,14 +172,13 @@ function loadJson(url, data = {}) { // (2)
             throw new HttpError(response);
         }
     })
-  
-    // helper class
-    class HttpError extends Error { // (1)
-        constructor(response) {
-            super(`${response.status} for ${response.url}`);
-            this.name = 'HttpError';
-            this.response = response;
-        }
+}
+// helper class
+class HttpError extends Error { // (1)
+    constructor(response) {
+        super(`${response.status} for ${response.url}`);
+        this.name = 'HttpError';
+        this.response = response;
     }
 }
 
@@ -190,10 +196,72 @@ function fetchUserIdsFromGitterRoom(skip) {
       });*/
 }
 
+
+function fetchGitInfoForGitterList(names) {
+    names = names.split(",");
+    console.log(names);
+
+    // helper function 1
+    const changeCursor = c => () =>
+      new Promise((resolve, reject) => {
+          document.body.style.cursor = c;
+          resolve();
+      });
+  
+    // https://quasar-rate.glitch.me/chapter-3/3-08-aggregate-all-outcomes.html
+    // need to be applied and improved upon 
+    var requests = 
+        names.map(name =>
+            getGitInfoForUserAndDisplay(name.trim())
+                  .catch(err => processError(err, name))
+                 );
+                            
+    // Update status message once all requests are finished
+    Promise.resolve()
+      .then(changeCursor("wait"))
+      .then(() => settled(requests).then(function(outcomes) { 
+            outcomes.forEach(function (outcome) {
+                if (outcome.state == 'fulfilled') count++;
+                else errors++;
+            });
+            console.log(count + " processed"); 
+            document.getElementById("progressStatus").append(" errors ", errorIDs.length);
+      })
+      .then(changeCursor("default"))
+    );
+  
+    document.getElementById("userID").focus();
+    document.getElementById("userID").select();
+
+    
+    
+    // helper function 2
+    function settled(promises) {
+      var alwaysFulFilled = promises.map (function (p) {
+        return p.then(
+          function onFulFilled(value) {
+            return { state: 'fulfilled', value: value};
+          },
+          function onRejected(reason) { 
+            return { state: 'rejected', reason: reason};
+          });
+      });
+      
+      return Promise.all(alwaysFulFilled);
+    }
+  
+    // helper function 3
+    function processError(err, name) {
+        errorIDs.push(name);
+        console.log("Failed: " + errorIDs /*+ err */ );
+        document.getElementById("errorIDs").append(name, ",");
+    }
+    
+}
+
 // this function processes a test list of Github IDs to 
 // mimic what happens elsewhere in a parallel promise execution
-var errorIDs = [];
-function fetchGitInfoForGitterList(names) {
+function fetchGitInfoForGitterList2(names) {
 
     names = names.split(",");
     console.log(names);
@@ -241,9 +309,9 @@ function getGitInfoForUserAndDisplay(name) {
         })
         .catch(err => {
             if (err instanceof HttpError && err.response.status == 404) { // (2)
-                document.getElementById("userID").focus();
+                //document.getElementById("userID").focus();
+                throw err;
             }
-            throw err;
         });
 
     /*
