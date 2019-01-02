@@ -87,6 +87,18 @@ let gUrl =
 initDefaultIds();
 
 
+function launchSampleGitterList() {
+    zoom.out();
+
+    let names = document.getElementById('userID').value;
+    if (names.trim().length)
+        fetchGitInfoForGitterList(names);
+    else {
+        var pNode = document.getElementById("progressStatus");
+        pNode.innerHTML = "Enter some Gitter IDs!";
+
+    }
+}
 
 // the main function that launches the parallel promise calls
 // activated from the button in the HTML page 
@@ -296,16 +308,6 @@ promise5.then(script => {
 });
 
 
-function demoGitterList() {
-    zoom.out();
-
-    let names = document.getElementById('userID').value;
-    if (names.trim().length)
-        fetchGitInfoForGitterList(names);
-    else {
-        launchHttpRequestsToGitter();
-    }
-}
 
 
 // ------------------------------------------
