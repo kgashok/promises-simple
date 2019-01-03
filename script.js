@@ -5,6 +5,9 @@
   return fetch(url)
     .then(response => response.json());
 }*/
+
+// for now, these global variables are at 
+// best a hack - needs refactoring 
 var authObj; // for accessing the GithubAPI 
 var count = 0, errors = 0; 
 var errorIDs = [];
@@ -71,11 +74,6 @@ function initDefaultIds() {
         `iliakan, jeresig, remy,
     joekzbee, *^, undefined, ###,
     GokulPrasath, parisudhaandireyaa`;
-
-    /*sleep(15000)
-      .then(() => 
-            document.getElementById('progressStatus').innerHTML = "Status Ok");
-    */
 }
 
 let gitterKey =
@@ -221,7 +219,7 @@ function fetchGitInfoForGitterList(names) {
             return { state: 'fulfilled', value: value};
           },
           function onRejected(reason) { 
-            //console.log("inside onRejected", reason); 
+            console.log("inside onRejected", reason); 
             return { state: 'rejected', reason: reason};
           });
       });
@@ -304,8 +302,6 @@ function loadJson(url, data = {}) { // (2)
         if (response.status == 200) {
             return response.json();
         } else {
-            // what is thrown here has to be captured
-            // and made part of errorIDs? 
             throw new HttpError(response);
         }
     })
@@ -313,7 +309,6 @@ function loadJson(url, data = {}) { // (2)
 // helper class
 class HttpError extends Error { // (1)
     constructor(response) {
-        //console.log(response);
         super(`${response.status} for ${response.url}`);
         this.name = 'HttpError';
         this.response = response;
