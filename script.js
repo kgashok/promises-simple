@@ -195,7 +195,7 @@ function fetchGitInfoForGitterList(names) {
     var requests = 
         names.map(name =>
             getGitInfoForUserAndDisplay(name.trim())
-                  .catch(err => processError(err, name))
+                  //.catch(err => processError(err, name))
                  );
                             
     return settled(requests).then(function(outcomes) { 
@@ -203,7 +203,7 @@ function fetchGitInfoForGitterList(names) {
             if (outcome.state == 'fulfilled') count++;
             else errors++;
         });
-        console.log(count + " processed"); 
+        console.log(count + " processed; " + "Errors? " + errors ); 
         document.getElementById("progressStatus").append(count + " processed...");
     });
   
@@ -215,11 +215,13 @@ function fetchGitInfoForGitterList(names) {
       var alwaysFulFilled = promises.map (function (p) {
         return p.then(
           function onFulFilled(value) {
-            //console.log("inside onfulfilled", value); 
+            console.log("inside onfulfilled", value); 
             return { state: 'fulfilled', value: value};
           },
           function onRejected(reason) { 
-            console.log("inside onRejected", reason); 
+              var name = extractNameFrom(reason.response.url);
+              console.log("inside onRejected", reason, name);            
+              processError(null, name);
             return { state: 'rejected', reason: reason};
           });
       });
@@ -227,8 +229,15 @@ function fetchGitInfoForGitterList(names) {
       return Promise.all(alwaysFulFilled);
     }
   
+    function extractNameFrom(reason) {
+      //https://stackoverflow.com/a/6165387/307454
+      var lastPart = reason.split("/").pop();
+      //console.log("name ", lastPart);
+      return lastPart;
+    }
     // helper function 3
     function processError(err, name) {
+        
         errorIDs.push(name);
         console.log("Failed: " + errorIDs /*+ err */ );
         document.getElementById("errorIDs").append(name, ",");
