@@ -283,16 +283,17 @@ function getGitInfoForUserAndDisplay(name) {
     */
     // helper function
     function addUserDetails(name, user) {
-        console.log(user);
+        //     console.log(user);
         let img = document.createElement('img');
         img.src = user.avatar_url;
         img.title = name + " == " + user.name + " == " + user.login;
-
+      
         let figure = document.createElement('figure');
         figure.class = "figure";
         let figcaption = document.createElement('figcaption');
         figcaption.class = "figure-caption";
-        figcaption.textContent = name + ", " + user.name + ",";
+        //figcaption.textContent = name + ", " + user.name + ",";
+        figcaption.textContent = user.name + ",";
         
         let url = document.createElement('a'); 
         url.setAttribute("href", user.html_url);
