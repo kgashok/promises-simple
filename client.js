@@ -283,7 +283,7 @@ function getGitInfoForUserAndDisplay(name) {
     */
     // helper function
     function addUserDetails(name, user) {
-             console.log(user);
+        //console.log(user);
         let img = document.createElement('img');
         img.src = user.avatar_url;
         img.title = name + " == " + user.name + " == " + user.login;
@@ -303,8 +303,15 @@ function getGitInfoForUserAndDisplay(name) {
         let url = document.createElement('a'); 
         url.setAttribute("href", user.html_url);
         //url.textContent =  user.html_url.split('/').pop();
-        url.textContent =  "github";
+        url.textContent =  "github ";
         figcaption.append(url);
+      
+        if (user.blog.length) {
+          let burl = document.createElement('a'); 
+          burl.setAttribute("href", user.blog);
+          burl.textContent = " /blog"; 
+          figcaption.append(burl);
+        }
         
         figure.append(img);
         figure.append(figcaption);
