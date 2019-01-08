@@ -8,6 +8,15 @@ Interested in understanding this codebase and remixing it?
 
 # Promises - Research
 
+- Promise repo 
+
+   - https://github.com/sindresorhus/promise-fun
+   - https://gitter.im/promisefun/Lobby (gitter room) 
+   - http://bit.ly/understandingPromises
+   - http://j.mp/usePromiseInsteadOfCallbacks
+   - https://github.com/sindresorhus/p-settle
+   
+   
 - JavaScript bookmarklet code to get URL of tab that was launched from current tab
    - http://bit.ly/promiseBasics
      - https://javascript.info/promise-api 
@@ -26,6 +35,8 @@ Interested in understanding this codebase and remixing it?
 
  
 # Ajax tutorial 
+
+Start here - https://javascript.info/xmlhttprequest
 
 http://www.kaidez.com/ajax-tutorial/
   - Alternatives
