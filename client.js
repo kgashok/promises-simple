@@ -1,4 +1,4 @@
-/* global authObj, setHtmlFile, setText */
+/* global zoom, authObj, setHtmlFile, setText */
 
 //-----------------------------
 // https://javascript.info/promise-chaining
@@ -74,7 +74,9 @@ function initDefaultIds() {
     document.getElementById('userID').value =
         `iliakan, jeresig, remy,
     joekzbee, *^, undefined, ###,
-    GokulPrasath, parisudhaandireyaa, nandhuvj, apollovishwas`;
+    GokulPrasath, parisudhaandireyaa,
+    nandhuvj, apollovishwas, sudharsanRajendran, 
+    ajeeth-b`;
 }
 
 let gitterKey =
@@ -284,10 +286,11 @@ function getGitInfoForUserAndDisplay(name) {
     */
     // helper function
     function addUserDetails(name, user) {
-        //console.log(user);
+        console.log(user);
         let img = document.createElement('img');
         img.src = user.avatar_url;
-        img.title = name + " == " + user.name + " == " + user.login;
+        //img.title = name + " == " + user.name + " == " + user.login;
+        img.title = user.bio;
       
         let figure = document.createElement('figure');
         figure.class = "figure";
