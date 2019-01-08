@@ -1,3 +1,5 @@
+/* global authObj, setHtmlFile, setText */
+
 //-----------------------------
 // https://javascript.info/promise-chaining
 //------------------------------
@@ -8,7 +10,6 @@
 
 // for now, these global variables are at 
 // best a hack - needs refactoring 
-var authObj; // for accessing the GithubAPI 
 var count = 0, errors = 0; 
 var errorIDs = [];
 
@@ -294,6 +295,7 @@ function getGitInfoForUserAndDisplay(name) {
         figcaption.class = "figure-caption";
 
         //figcaption.textContent = name + ", " + user.name + ",";
+        //console.log(user.name);
         figcaption.textContent = user.name + "@";
         let gurl = document.createElement('a'); 
         gurl.setAttribute("href", "https://gitter.im/" + name);
