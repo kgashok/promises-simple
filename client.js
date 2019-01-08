@@ -74,7 +74,7 @@ function initDefaultIds() {
     document.getElementById('userID').value =
         `iliakan, jeresig, remy,
     joekzbee, *^, undefined, ###,
-    GokulPrasath, parisudhaandireyaa`;
+    GokulPrasath, parisudhaandireyaa, nandhuvj, apollovishwas`;
 }
 
 let gitterKey =
@@ -309,8 +309,9 @@ function getGitInfoForUserAndDisplay(name) {
         figcaption.append(url);
       
         if (user.blog.length) {
+          console.log(user.blog);
           let burl = document.createElement('a'); 
-          burl.setAttribute("href", user.blog);
+          burl.setAttribute("href", processURL(user.blog));
           burl.textContent = " /blog"; 
           figcaption.append(burl);
         }
@@ -323,6 +324,13 @@ function getGitInfoForUserAndDisplay(name) {
         document.getElementById("userID").focus()
         document.getElementById("userID").select();
 
+    }
+  
+    function processURL (url) {
+        url.replace(/^\/+/g, '');
+        if (url.indexOf("http://") === -1)
+          url = "http://" + url;
+        return url;
     }
 
 }
