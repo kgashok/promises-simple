@@ -76,18 +76,20 @@ function initDefaultIds() {
     joekzbee, *^, undefined, ###,
     GokulPrasath, parisudhaandireyaa,
     nandhuvj, apollovishwas, sudharsanRajendran, 
-    ajeeth-b`;
+    ajeeth-b, kgashok`;
 }
 
 let gitterKey =
     "bad0cafba005887e3e7e97dd5a640030f0c7e1b8";
-let roomid =
+
+let fortuneid = 
+    "5c3386b6d73408ce4fb3e75e";
+let campsiteid = 
     "570a5925187bb6f0eadebf05";
-let gUrl =
-    "https://api.gitter.im/v1/rooms/" +
-    roomid +
-    "/users?access_token=" +
-    gitterKey;
+var roomid =
+    campsiteid; 
+
+
 
 initDefaultIds();
 
@@ -95,7 +97,7 @@ initDefaultIds();
 function launchSampleGitterList() {
     // count = 0; errors = 0; 
     zoom.out();
-
+  
     // helper function 1
     const changeCursor = c => () =>
       new Promise((resolve, reject) => {
@@ -124,15 +126,29 @@ function launchSampleGitterList() {
 //
 function launchHttpRequestsToGitter() {
     count = 0; errors = 0;
+    var skiplist; 
+  
+    let roomstring =  document.getElementById("gitterRoom").value; 
+    console.log("room ", roomstring); 
 
-    // https://stackoverflow.com/a/38213213/307454
-    // this is quite arbitrary - Gitter room ID count must be 
-    // used to calculate this properly 
-    let skiplist = // [0, 30, 60, 90, 120, 150, 180, 210, 240] ; 
-        Array.from({
-            length: 24
-        }, (v, k) => k * 30);
-
+    if (roomstring.length !== 0) {
+        roomid = fortuneid; 
+        skiplist = // [0, 30, 60, 90, 120, 150, 180, 210, 240] ; 
+            Array.from({
+                length: 2
+            }, (v, k) => k * 30);
+    }
+    else {
+        roomid = campsiteid;
+        // https://stackoverflow.com/a/38213213/307454
+        // this is quite arbitrary - Gitter room ID count must be 
+        // used to calculate this properly 
+        skiplist = // [0, 30, 60, 90, 120, 150, 180, 210, 240] ; 
+            Array.from({
+                length: 24
+            }, (v, k) => k * 30);
+    }
+      
     changeProgressToBusy();
     Promise.all(
         skiplist.map(
@@ -171,6 +187,13 @@ function launchHttpRequestsToGitter() {
 
 function fetchUserIdsFromGitterRoom(skip) {
     let userids = [];
+    let gUrl =
+      "https://api.gitter.im/v1/rooms/" +
+      roomid +
+      "/users?access_token=" +
+      gitterKey;
+  
+
     return loadJson(gUrl + "&skip=" + skip).then(users => {
         for (var user of users) {
             userids.push(user.username);
