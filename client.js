@@ -82,6 +82,8 @@ function initDefaultIds() {
 let gitterKey =
     "bad0cafba005887e3e7e97dd5a640030f0c7e1b8";
 
+// to get room IDs
+//https://api.gitter.im/v1/rooms?access_token=bad0cafba005887e3e7e97dd5a640030f0c7e1b8
 let fortuneid = 
     "5c3386b6d73408ce4fb3e75e";
 let campsiteid = 
@@ -129,7 +131,7 @@ function launchHttpRequestsToGitter() {
     var skiplist; 
   
     let roomstring =  document.getElementById("gitterRoom").value; 
-    console.log("room ", roomstring); 
+    //console.log("room ", roomstring); 
 
     if (roomstring.length !== 0) {
         roomid = fortuneid; 
@@ -354,8 +356,8 @@ function getGitInfoForUserAndDisplay(name) {
   
     function processURL (url) {
         url.replace(/^\/+/g, '');
-        if (url.indexOf("http://") === -1)
-          url = "http://" + url;
+        if (url.indexOf("https://") === -1 || url.indexOf("https://") === -1)
+          url = "https://" + url;
         return url;
     }
 
