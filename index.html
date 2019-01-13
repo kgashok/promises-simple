@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Glitch Github Promises</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link id="favicon" rel="icon" href="https://bit.ly/ajaxICO" type="image/x-icon">
+    <!-- import the webpage's stylesheet -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- import the webpage's javascript file -->
+    <link rel="stylesheet" href="/style.css">
+    <script type="text/javascript" > 
+      var authObj;
+    </script>
+    <script src="/loadFile.js" defer></script> 
+    <script src="/client.js" defer></script> 
+    <!--<script src="/script.js" defer></script> -->
+  </head>  
+  <body>
+    <header>
+      Want to provide feedback? 
+      Click <a target="_" href="https://github.com/kgashok/promises-simple/issues/new">here</a>
+      ; last github code <a target="_" href="https://github.com/kgashok/promises-simple/commits/glitch">checkin</a>
+    </header>    
+    <main>
+      <h1>
+        Access Github using Promises
+      </h1>
+      <em>
+        Inspired by <a href="https://javascript.info/promise-chaining">
+          https://javascript.info/promise-chaining</a>
+      </em>
+      <br>
+      <br>
+      <div id="progressStatus"> Status ok </div>
+      <p>
+        <button id = "simulateTest" onclick="simulateCallToFunction()">Test</button>
+        Open the console, and see the prompts!
+      </p>
+      <input type="text" id="userID" name="b" class="inputDialog" 
+             placeholder="enter Gitter IDs">
+      <button id="useridInput" onclick="launchSampleGitterList()">Submit</button>
+      <p>
+        Load Github profiles of Gitter Ids registered at
+        <input type="text" id="gitterRoom" placeholder="kgisl/campsite">
+        <button id="loadGitter" onclick="launchHttpRequestsToGitter()">Load!</button>
+      </p>
+      <div id="errorTarget">
+        <br>
+        <span>
+          <b>Failed IDs</b>
+        </span>
+        <div class = "errors" id = "errorIDs"> </div>
+      </div>
+      <h3>
+        <i>"id = githubTarget"  </i>
+      </h3>
+      <br>
+      <!--<div class="container-fluid"><div class="row">-->
+      <div class = "page-body" id="githubTarget"> <!--class="col-xs-12"> -->
+      </div> 
+      <br>
+      <h1>
+        Script loading using Promises
+      </h1>
+      <em>
+        Inspired by <a href="https://javascript.info/promise-basics">
+          https://javascript.info/promise-basics</a>
+      </em>
+      <h3>
+        <i>"id = scriptTarget"  </i>
+      </h3>
+      <div id="scriptTarget"></div>
+      <br>
+      <div id="filecontents" >
+      </div>
+    </main>
+    <script src = "https://cdn.rawgit.com/hakimel/zoom.js/master/js/zoom.js" ></script>
+    <script>
+      document.querySelector( '.page-body' ).addEventListener( 'click', function( event ) {
+        event.preventDefault();
+        zoom.to({ element: event.target });
+      } );
+      document.querySelector('.inputDialog').addEventListener( 'click', function(event) {
+        event.preventDefault();
+        zoom.to({ element: event.target});
+      });
+    </script>
+    <!-- is it better to import script here? 
+        <script src="/script.js"></script> 
+    -->
+    
+    <!-- include the Glitch button to show what the webpage is about and
+         to make it easier for folks to view source and remix 
+    -->
+    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
+    <script src="https://button.glitch.me/button.js"></script>
+    <!--
+      Legacy code - to be removed soon 
+      <div class = "container-fluid">
+      <div class = "row">
+      <span class = "col-xs-12">
+      <img src="https://j.mp/mysteryFunc13" class="img-responsive">
+      <img src="https://j.mp/mysteryFunc13" class="img-responsive">
+      <!--
+      <figure class="figure">
+      <img src="https://j.mp/mysteryFunc13" class="figure-img img-fluid rounded">
+      <figcaption class="figure-caption">A caption for the above image.</figcaption>
+      </figure>
+      <figure class="figure">
+      <img src="https://j.mp/mysteryFunc13" class="figure-img img-fluid rounded">
+      <figcaption class="figure-caption">A caption 2 for the above image.</figcaption>
+      </figure>
+      </span>
+      </div>
+      </div>
+    -->
+  </body>
+</html>

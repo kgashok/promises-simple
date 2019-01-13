@@ -1,0 +1,34 @@
+<!--
+ 1. Rename the current index.html -> index.html.bak 
+ 2. Rename this file (github.html) as index.html 
+    And then watch the loading and removal of image corresponding 
+    to the name in user.json file
+ 3. 
+-->
+<!DOCTYPE html>
+<html>
+
+<body>
+  <script>
+    'use strict';
+    // Make a request for user.json
+    fetch('/user.json')
+      // Load it as json
+      .then(response => response.json())
+      // Make a request to github
+      .then(user => fetch(`https://api.github.com/users/${user.name}`))
+      // Load the response as json
+      .then(response => response.json())
+      // Show the avatar image (githubUser.avatar_url) for 3 seconds (maybe animate it)
+      .then(githubUser => {
+        let img = document.createElement('img');
+        img.src = githubUser.avatar_url;
+        img.className = "promise-avatar-example";
+        document.body.append(img);
+    
+        setTimeout(() => img.remove(), 3000); // (*)
+      });
+  </script>
+</body>
+
+</html>

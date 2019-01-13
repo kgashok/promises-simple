@@ -1,0 +1,104 @@
+/* CSS files add styling rules to your content */
+
+input { 
+  background-color: azure; 
+}
+
+body {
+  font-family: "Benton Sans", "Helvetica Neue", helvetica, arial, sans-serif;
+  margin: 2em;
+  background-color: beige;
+}
+
+h1 {
+  font-style: normal;
+  color: #373fff;
+}
+
+header { 
+  background-color: beige;
+}
+
+.page-body { 
+  background-color: whitesmoke;
+}
+
+.errors { 
+  background-color: snow;
+  color: red;
+  font-size: 1.5em;
+}
+
+#progressStatus { 
+  border: dotted;
+  border-color: darkGray;
+  background-color: snow;
+  color: green;
+  font-size: .8em;
+  height: auto; 
+}
+
+figure { 
+  display: table; 
+  display: inline-block;
+
+}
+
+figcaption { 
+  display: table-caption;
+  max-width: 30%;
+  caption-side: bottom;
+  font-style: italic;
+  font-size: 9px;
+  /* line-height: 1.4em */
+}
+
+
+figure img {
+  /*img.height = "90"; */
+    width :118px;
+    padding: 2px;
+  /*max-width: 30%; */
+  /*width: 40% */
+  /*height: auto */
+}
+
+
+/* for hover text over image */ 
+/* https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_image_overlay_opacity */
+
+.image {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: .5s ease;
+  backface-visibility: hidden;
+}
+
+.middle {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.container:hover .image {
+  opacity: 0.3;
+}
+
+.container:hover .middle {
+  opacity: 1;
+}
+
+.text {
+  background-color: #4CAF50;
+  color: white;
+  font-size: 16px;
+  padding: 16px 32px;
+}
+
