@@ -75,8 +75,7 @@ function initDefaultIds() {
         `iliakan, jeresig, remy,
     joekzbee, *^, undefined, ###,
     GokulPrasath, parisudhaandireyaa,
-    nandhuvj, apollovishwas, sudharsanRajendran, 
-    ajeeth-b, kgashok`;
+    apollovishwas, sudharsanRajendran`;
 }
 
 let gitterKey =
@@ -86,10 +85,18 @@ let gitterKey =
 //https://api.gitter.im/v1/rooms?access_token=bad0cafba005887e3e7e97dd5a640030f0c7e1b8
 let fortuneid = 
     "5c3386b6d73408ce4fb3e75e";
+let cs8251 = 
+    "5c7b60a7d73408ce4fb97445"; 
 let campsiteid = 
     "570a5925187bb6f0eadebf05";
-var roomid =
-    campsiteid; 
+
+let roomDB = {
+  "fortune":  {id: "5c3386b6d73408ce4fb3e75e", skipcount: 1},
+  "cs8251" :  {id: "5c7b60a7d73408ce4fb97445", skipcount: 5},
+  "campsite": {id: "570a5925187bb6f0eadebf05", skipcount: 24}  
+};
+
+var roomid = roomDB['campsite'].id; 
 
 
 
@@ -134,20 +141,23 @@ function launchHttpRequestsToGitter() {
     //console.log("room ", roomstring); 
 
     if (roomstring.length !== 0) {
-        roomid = fortuneid; 
+        roomid = roomDB[roomstring].id; 
+        let scount = roomDB[roomstring].skipcount;
         skiplist = // [0, 30, 60, 90, 120, 150, 180, 210, 240] ; 
             Array.from({
-                length: 2
+                length: scount
             }, (v, k) => k * 30);
     }
     else {
-        roomid = campsiteid;
+        roomid = roomDB['campsite'].id;
+        let scount = roomDB['campsite'].skipcount;
+        console.log("roomid", roomid);
         // https://stackoverflow.com/a/38213213/307454
         // this is quite arbitrary - Gitter room ID count must be 
         // used to calculate this properly 
         skiplist = // [0, 30, 60, 90, 120, 150, 180, 210, 240] ; 
             Array.from({
-                length: 24
+                length: scount
             }, (v, k) => k * 30);
     }
       
